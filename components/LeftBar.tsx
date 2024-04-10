@@ -1,17 +1,19 @@
 "use client";
-import { BsFillPencilFill } from "react-icons/bs";
 import Bar from "./ui/Bar";
 import Tool from "./ui/Tool";
+import { Tools } from "../constants";
+import Icons from "./ui/Icons";
 
 const LeftBar = () => {
   return (
     <div style={{ position: 'absolute', top: '15px', left: '15px' }}>
         <Bar>
             {
-                Array.from(Array(10).keys()).map((el, index) => {
-                    return (<Tool key={index}>
-                        <BsFillPencilFill />
-                    </Tool>)
+                Tools.map((el, index) => {
+                    const {name, value, vector} = el;
+                    return <Tool key={index}>
+                        <Icons iconName={vector} />
+                    </Tool>
                 })
             }
         </Bar>

@@ -1,10 +1,11 @@
 import styled from "styled-components";
+import DrawingArea from '../../.history/components/DrawingArea_20240410211530';
 
 export const MovableBar = styled.div`
     width: 100%;
     height: auto;
     padding: .35rem;
-    background: #52819D;
+    background: #DFDFDF;
     border-radius: 5px 5px 0px 0px;
     display: flex;
     align-items: center;
@@ -13,7 +14,7 @@ export const MovableBar = styled.div`
     & > div {
         width: .35rem;
         height: .35rem;
-        background: #7BB3CC;
+        background: #B8B8B8;
         border-radius: 50%;
         margin: 0rem .15rem;
     }
@@ -28,9 +29,12 @@ export const MovableBar = styled.div`
 `;
 
 export const MovableBarStyle = styled.div`
-    background-color: #2A536F;
+    background-color: white;
     padding: 0rem;
     border-radius: 5px;
+    color: black;
+    font-size: 1.25rem;
+    box-shadow: 2px 2px 5px rgba(0,0,0, .5);
 `;
 
 export const ToolContainer = styled.button`
@@ -39,4 +43,15 @@ export const ToolContainer = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
+    color: black;
+`;
+
+export const DrawingAreaCanvas = styled.div`
+    width: 100%;
+    height: 100dvh;
+
+    & > canvas {
+        width: 100%;
+        height: 100dvh;
+    }
 `;
