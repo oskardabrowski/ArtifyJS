@@ -34,7 +34,8 @@ export const MovableBarStyle = styled.div`
     border-radius: 5px;
     color: black;
     font-size: 1.25rem;
-    box-shadow: 2px 2px 5px rgba(0,0,0, .5);
+    box-shadow: 3px 3px 0px rgba(0,0,0, 1);
+    border: 2px solid black;
 `;
 
 export const ToolContainer = styled.button`

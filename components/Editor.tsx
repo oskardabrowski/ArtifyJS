@@ -5,10 +5,9 @@ import {EditorField} from './GlobalStyles';
 import LeftBar from './LeftBar';
 import RightBar from './RightBar';
 import DrawingArea from "./DrawingArea";
+import { createEditor } from "../constants/functions";
 
 import { useRef, useEffect } from "react";
-// @ ts-ignore
-import {fabric} from 'fabric';
 import { Canvas } from "fabric/fabric-impl";
 
 const Editor = () => {
@@ -16,18 +15,8 @@ const Editor = () => {
   const drawingCanvas = useRef<Canvas | null>(null);
 
   useEffect(() => {
-    const init = new fabric.Canvas(drawingAreaRef.current, {
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
-
+    const init = createEditor(drawingAreaRef);
     drawingCanvas.current = init;
-
-    var circle = new fabric.Circle({
-      radius: 100, fill: 'green', left: 100, top: 100
-    });
-
-    drawingCanvas.current.add(circle)
   }, [])
 
   useEffect(() => {
