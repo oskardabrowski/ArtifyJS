@@ -10,17 +10,32 @@ It takes html canvas RefObject and create fabric Canvas with custom controls
 
 export function createEditor(drawingAreaRef: RefObject<HTMLCanvasElement>) {
 
+    /*
+     *
+     * Initialize fabric canvas
+     *
+     */
     const init = new fabric.Canvas(drawingAreaRef.current, {
       width: window.innerWidth,
       height: window.innerHeight,
     });
 
+     /*
+     ?
+     ? Test circle, will be removed
+     ?
+     */
     const circle = new fabric.Circle({
       radius: 100, fill: 'green', left: 100, top: 100
     });
 
     init.add(circle);
 
+    /*
+     *
+     * Setting style for editing borders
+     *
+     */
     fabric.Object.prototype.set({
       transparentCorners: false,
       cornerStrokeColor: 'white',
@@ -33,8 +48,11 @@ export function createEditor(drawingAreaRef: RefObject<HTMLCanvasElement>) {
       strokeWidth: 3,
     });
 
-
-
+    /*
+     *
+     * Setting custom style for rotating controller
+     *
+     */
     // @ts-ignore
     function renderRotateControl(ctx, left, top) {
       // @ts-ignore
@@ -55,6 +73,11 @@ export function createEditor(drawingAreaRef: RefObject<HTMLCanvasElement>) {
       ctx.restore();
     };
 
+    /*
+     *
+     * Setting custom rotating controller
+     *
+     */
     fabric.Object.prototype.controls.RotateController = new fabric.Control({
       x: 0,
       y: -0.5,
@@ -70,6 +93,11 @@ export function createEditor(drawingAreaRef: RefObject<HTMLCanvasElement>) {
       withConnection: true,
     });
 
+    /*
+     *
+     * Setting style for rest of custom controllers
+     *
+     */
     // @ts-ignore
     function renderControls(ctx, left, top) {
       // @ts-ignore
@@ -91,93 +119,91 @@ export function createEditor(drawingAreaRef: RefObject<HTMLCanvasElement>) {
       ctx.restore();
     };
 
+    /*
+     *
+     * Override default controllers
+     *
+     */
     const ScaleControls = [
       {
-        name: "ScaleTopLeftController",
+        name: "tl",
         x: -0.5,
         y: -0.5,
         cursorStyle: 'crosshair',
         // @ts-ignore
         actionHandler: fabric.controlsUtils.scalingEqually,
-        actionName: 'scale',
       },
       {
-        name: "ScaleTopController",
+        name: "mt",
         x: 0,
         y: -0.5,
         cursorStyle: 'crosshair',
         // @ts-ignore
-        actionHandler: fabric.controlsUtils.rotationWithSnapping,
-        actionName: 'scale',
+        actionHandler: fabric.controlsUtils.scalingYOrSkewingX,
       },
       {
-        name: "ScaleTopRightController",
+        name: "tr",
         x: 0.5,
         y: -0.5,
         cursorStyle: 'crosshair',
         // @ts-ignore
-        actionHandler: fabric.controlsUtils.rotationWithSnapping,
-        actionName: 'scale',
+        actionHandler: fabric.controlsUtils.scalingEqually,
       },
       {
-        name: "ScaleMiddleRightController",
+        name: "mr",
         x: 0.5,
         y: 0,
         cursorStyle: 'crosshair',
         // @ts-ignore
-        actionHandler: fabric.controlsUtils.scalingX,
-        actionName: 'scale',
+        actionHandler: fabric.controlsUtils.scalingXOrSkewingY,
       },
       {
-        name: "ScaleMiddleLeftController",
+        name: "ml",
         x: -0.5,
         y: 0,
         cursorStyle: 'crosshair',
         // @ts-ignore
-        actionHandler: fabric.controlsUtils.scalingX,
-        actionName: 'scale',
+        actionHandler: fabric.controlsUtils.scalingXOrSkewingY,
       },
       {
-        name: "ScaleBottomLeftController",
+        name: "bl",
         x: -0.5,
         y: 0.5,
         cursorStyle: 'crosshair',
         // @ts-ignore
         actionHandler: fabric.controlsUtils.scalingEqually,
-        actionName: 'scale',
       },
       {
-        name: "ScaleBottomController",
+        name: "mb",
         x: 0,
         y: 0.5,
         cursorStyle: 'crosshair',
         // @ts-ignore
-        actionHandler: fabric.controlsUtils.scalingY,
-        actionName: 'scale',
+        actionHandler: fabric.controlsUtils.scalingYOrSkewingX,
       },
       {
-        name: "ScaleBottomRightController",
+        name: "br",
         x: 0.5,
         y: 0.5,
         cursorStyle: 'crosshair',
         // @ts-ignore
         actionHandler: fabric.controlsUtils.scalingEqually,
-        actionName: 'scale',
       },
     ];
 
+    /*
+     *
+     * Overriding defaults
+     *
+     */
     ScaleControls.map((el) => {
-      const {name, x, y, cursorStyle, actionHandler, actionName} = el;
+      const {name, x, y, actionHandler} = el;
 
       fabric.Object.prototype.controls[name] = new fabric.Control({
         x: x,
         y: y,
-        offsetX: 0,
-        offsetY: 0,
-        cursorStyle: cursorStyle,
         // @ts-ignore
         actionHandler: actionHandler,
-        actionName: actionName,
         render: renderControls,
         // @ts-ignore
         cornerSize: 6,
@@ -185,20 +211,5 @@ export function createEditor(drawingAreaRef: RefObject<HTMLCanvasElement>) {
       });
     });
 
-    console.log(fabric.Object.prototype.controls)
-
     return init;
 }
-
-// TL BL TR BR
-// ML MB MR MT
-
-
-
-// http://fabricjs.com/controls-api
-// http://fabricjs.com/controls-customization
-//
-//
-//
-
-// TODO Fix scaling and others for new controls
