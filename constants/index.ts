@@ -17,7 +17,24 @@ export const Tools = [
     {
         vector: "IoShapesOutline",
         name: "Shapes",
-        value: "bezier_curve"
+        value: "bezier_curve",
+        submenu: [
+            {
+                vector: "BiRectangle",
+                name: "Rectangle",
+                value: "rect",
+            },
+            {
+                vector: "LuCircle",
+                name: "Circle",
+                value: "circle",
+            },
+            {
+                vector: "LuTriangle",
+                name: "Triangle",
+                value: "triangle",
+            },
+        ]
     },
     {
         vector: "MdOutlineGradient",
@@ -42,7 +59,19 @@ export const Tools = [
     {
         vector: "IoTextOutline",
         name: "Text",
-        value: "text"
+        value: "text",
+        submenu: [
+            {
+                vector: "RiText",
+                name: "Artistic text",
+                value: "artistic_text",
+            },
+            {
+                vector: "RiTextBlock",
+                name: "Frame text",
+                value: "frame_text",
+            },
+        ]
     },
     {
         vector: "IoCropSharp",
@@ -52,33 +81,79 @@ export const Tools = [
     {
         vector: "TbArrowsMoveVertical",
         name: "Move tool",
-        value: "movetool"
+        value: "movetool",
+        submenu: [
+            {
+                vector: "MdOutlineVerticalAlignTop",
+                name: "Move to Front",
+                value: "move_front",
+            },
+            {
+                vector: "LuMoveUp",
+                name: "Move Forward One",
+                value: "move_forward_one",
+            },
+            {
+                vector: "LuMoveDown",
+                name: "Move Back One",
+                value: "move_back_one",
+            },
+            {
+                vector: "MdOutlineVerticalAlignBottom",
+                name: "Move to Back",
+                value: "move_back",
+            },
+        ]
     },
     {
         vector: "TbTransformFilled",
         name: "Transform tools",
-        value: "transform"
+        value: "transform",
+        submenu: [
+            {
+                vector: "RiText",
+                name: "Artistic text",
+                value: "artistic_text",
+            },
+            {
+                vector: "RiTextBlock",
+                name: "Frame text",
+                value: "frame_text",
+            },
+        ]
     },
     {
         vector: "LuCombine",
         name: "Combine tools",
-        value: "transform"
+        value: "transform",
+        submenu: [
+            {
+                vector: "RiText",
+                name: "Artistic text",
+                value: "artistic_text",
+            },
+            {
+                vector: "RiTextBlock",
+                name: "Frame text",
+                value: "frame_text",
+            },
+        ]
     },
     {
         vector: "LuAlignCenterHorizontal",
         name: "Alignment tools",
-        value: "transform"
+        value: "transform",
+        submenu: [
+            {
+                vector: "RiText",
+                name: "Artistic text",
+                value: "artistic_text",
+            },
+            {
+                vector: "RiTextBlock",
+                name: "Frame text",
+                value: "frame_text",
+            },
+        ]
     }
 ];
-
-// --> Tools
-// Pen (bezier)
-// Pencil (free draw)
-// Gradient
-// Image
-// Shapes (rect, circle, triangle, polygon)
-// Hand (move tool)
-// Zoom
-//
-//
-//

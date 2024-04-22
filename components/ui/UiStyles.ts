@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import DrawingArea from '../../.history/components/DrawingArea_20240410211530';
 
 export const MovableBar = styled.div`
     width: 100%;
@@ -45,6 +44,7 @@ export const ToolContainer = styled.button`
     align-items: center;
     justify-content: center;
     color: black;
+    position: relative;
 `;
 
 export const DrawingAreaCanvas = styled.div`
@@ -54,5 +54,32 @@ export const DrawingAreaCanvas = styled.div`
     & > canvas {
         width: 100%;
         height: 100dvh;
+    }
+`;
+
+export const ToolSubmenu = styled.div`
+    position: absolute;
+    left: 100%;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 5px;
+    box-shadow: 3px 3px 0px rgba(0,0,0, 1);
+    width: max-content;
+    transition: all .25s ease-in-out;
+
+    & > button {
+        padding: .5rem 1.2rem .5rem 1.2rem;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        &:hover {
+            background: black;
+            color: white;
+        }
+        & > span {
+            padding-left: .5rem;
+            font-size: .95rem;
+        }
     }
 `;

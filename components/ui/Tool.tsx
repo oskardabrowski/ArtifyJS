@@ -1,10 +1,11 @@
 "use client";
 
 import { ToolContainer } from "./UiStyles";
+import { ToolPropsInterface } from "../../constants/interfaces";
 
-const Tool = ({children}: any) => {
+const Tool = ({submenu, name, mouseEnterHandler, mouseLeaveHandler, children}: ToolPropsInterface) => {
   return (
-    <ToolContainer>{children}</ToolContainer>
+    <ToolContainer onMouseOver={() => mouseEnterHandler({submenu, name})} onMouseLeave={() => mouseLeaveHandler(submenu)}>{children}</ToolContainer>
   )
 }
 

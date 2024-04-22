@@ -22,7 +22,7 @@ export function createEditor(drawingAreaRef: RefObject<HTMLCanvasElement>) {
 
      /*
      ?
-     ? Test circle, will be removed
+     ? Test circle and rect, will be removed
      ?
      */
     const circle = new fabric.Circle({
@@ -30,6 +30,12 @@ export function createEditor(drawingAreaRef: RefObject<HTMLCanvasElement>) {
     });
 
     init.add(circle);
+
+    const rect = new fabric.Rect({
+      fill: 'green', left: 400, top: 400, width: 200, height: 200
+    });
+
+    init.add(rect);
 
     /*
      *
@@ -78,7 +84,7 @@ export function createEditor(drawingAreaRef: RefObject<HTMLCanvasElement>) {
      * Setting custom rotating controller
      *
      */
-    fabric.Object.prototype.controls.RotateController = new fabric.Control({
+    fabric.Object.prototype.controls.mtr = new fabric.Control({
       x: 0,
       y: -0.5,
       offsetX: 0,
