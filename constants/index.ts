@@ -1,3 +1,5 @@
+import {fabric} from 'fabric';
+
 export const Tools = [
     {
         vector: "BsVectorPen",
@@ -156,4 +158,71 @@ export const Tools = [
             },
         ]
     }
+];
+
+export const ScaleControls = [
+  {
+    name: "tl",
+    x: -0.5,
+    y: -0.5,
+    cursorStyle: 'crosshair',
+    // @ts-ignore
+    actionHandler: fabric.controlsUtils.scalingEqually,
+  },
+  {
+    name: "mt",
+    x: 0,
+    y: -0.5,
+    cursorStyle: 'crosshair',
+    // @ts-ignore
+    actionHandler: fabric.controlsUtils.scalingYOrSkewingX,
+  },
+  {
+    name: "tr",
+    x: 0.5,
+    y: -0.5,
+    cursorStyle: 'crosshair',
+    // @ts-ignore
+    actionHandler: fabric.controlsUtils.scalingEqually,
+  },
+  {
+    name: "mr",
+    x: 0.5,
+    y: 0,
+    cursorStyle: 'crosshair',
+    // @ts-ignore
+    actionHandler: fabric.controlsUtils.scalingXOrSkewingY,
+  },
+  {
+    name: "ml",
+    x: -0.5,
+    y: 0,
+    cursorStyle: 'crosshair',
+    // @ts-ignore
+    actionHandler: fabric.controlsUtils.scalingXOrSkewingY,
+  },
+  {
+    name: "bl",
+    x: -0.5,
+    y: 0.5,
+    cursorStyle: 'crosshair',
+    // @ts-ignore
+    actionHandler: fabric.controlsUtils.scalingEqually,
+  },
+  {
+    name: "mb",
+    x: 0,
+    y: 0.5,
+    cursorStyle: 'crosshair',
+    // @ts-ignore
+    actionHandler: fabric.controlsUtils.scalingYOrSkewingX,
+  },
+  {
+    name: "br",
+    x: 0.5,
+    y: 0.5,
+    cursorStyle: 'crosshair',
+    // @ts-ignore
+    actionHandler: fabric.controlsUtils.scalingEqually,
+  },
 ];

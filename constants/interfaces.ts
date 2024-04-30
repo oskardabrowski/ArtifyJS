@@ -1,4 +1,5 @@
 import { MutableRefObject, RefObject } from "react";
+import { ToolType } from "./enums";
 
 export interface DrawingAreaInterface {
     drawingAreaRef: RefObject<HTMLCanvasElement>
@@ -18,11 +19,10 @@ export interface ToolMouseEnterInterface {
 }
 
 export interface ToolPropsInterface {
-    submenu: {
-    vector: string;
-    name: string;
-    value: string;
-    }[] | undefined,
+    clickHandler: (type: ToolType, name: string) => void,
+    valueProp: string,
+    toolType: ToolType,
+    submenu: { vector: string; name: string; value: string;}[] | undefined,
     name: string,
     mouseEnterHandler: ({ submenu, name }: ToolMouseEnterInterface) => void,
     mouseLeaveHandler: (submenu: {vector: string; name: string; value: string;}[] | undefined) => void,

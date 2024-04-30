@@ -50,7 +50,6 @@ export const ToolContainer = styled.button`
 export const DrawingAreaCanvas = styled.div`
     width: 100%;
     height: 100dvh;
-
     & > canvas {
         width: 100%;
         height: 100dvh;
