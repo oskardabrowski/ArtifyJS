@@ -1,8 +1,7 @@
 import { DrawingAreaCanvas } from "./ui/UiStyles"
-import { DrawingAreaInterface } from "../constants/interfaces"
+import { DrawingInterface } from "../constants/interfaces"
 
-
-const DrawingArea = ({drawingAreaRef}: DrawingAreaInterface) => {
+const DrawingArea = ({drawingAreaRef}: DrawingInterface) => {
   return (
     <DrawingAreaCanvas>
         <canvas ref={drawingAreaRef} />

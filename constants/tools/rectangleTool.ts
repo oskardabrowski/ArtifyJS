@@ -35,7 +35,8 @@ export class RectangleTool {
                 height: 0,
                 left: this.x,
                 top: this.y,
-                fill: '#DFDFDF'
+                fill: '#DFDFDF',
+                padding: 0,
             });
 
             this.editor?.add(rectangle);
@@ -71,11 +72,11 @@ export class RectangleTool {
 
             // * Switch to handle moving direction
             switch(JSON.stringify(condition)) {
-                case JSON.stringify({x: true, y: true}): rectangle?.set('width', w).set('height', h); break;
-                case JSON.stringify({x: false, y: true}): rectangle?.set('left', mouse!.x).set('width', w).set('height', h); break;
-                case JSON.stringify({x: true, y: false}): rectangle?.set('top', mouse!.y).set('width', w).set('height', h); break;
-                case JSON.stringify({x: false, y: false}): rectangle?.set('left', mouse!.x).set('top', mouse!.y).set('width', w).set('height', h); break;
-                default: rectangle?.set('width', w).set('height', h); break;
+                case JSON.stringify({x: true, y: true}): rectangle?.set('padding', 0).set('width', w).set('height', h); break;
+                case JSON.stringify({x: false, y: true}): rectangle?.set('padding', 0).set('left', mouse!.x).set('width', w).set('height', h); break;
+                case JSON.stringify({x: true, y: false}): rectangle?.set('padding', 0).set('top', mouse!.y).set('width', w).set('height', h); break;
+                case JSON.stringify({x: false, y: false}): rectangle?.set('padding', 0).set('left', mouse!.x).set('top', mouse!.y).set('width', w).set('height', h); break;
+                default: rectangle?.set('padding', 0).set('width', w).set('height', h); break;
             }
 
             this.editor?.renderAll();
@@ -120,10 +121,12 @@ export class RectangleTool {
     }
 
     start() {
+        console.log('rect tool started');
         this.isActive = true;
     }
 
     stop() {
+        console.log('rect tool stopped');
         this.isActive = false;
     }
 }

@@ -1,10 +1,14 @@
-import { MutableRefObject, RefObject } from "react";
+import { Dispatch, MutableRefObject, RefObject, SetStateAction } from "react";
 import { ToolType } from "./enums";
+import { ToolManager } from "./toolsManager";
 
-export interface DrawingAreaInterface {
+export interface DrawingInterface {
     drawingAreaRef: RefObject<HTMLCanvasElement>
 }
 
+export interface LeftBarInterface {
+    setToolName: Dispatch<SetStateAction<string | null>>
+}
 export interface IconsInterface {
     iconName: string
 }

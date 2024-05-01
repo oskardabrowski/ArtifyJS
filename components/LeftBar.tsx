@@ -4,13 +4,15 @@ import Tool from "./ui/Tool";
 import { Tools } from "../constants";
 import Icons from "./ui/Icons";
 import { ToolSubmenu } from "./ui/UiStyles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToolMouseEnterInterface } from "../constants/interfaces";
 import { initializeSelectedTool } from "../constants/functions";
 import { ToolType } from "../constants/enums";
+import { LeftBarInterface } from "../constants/interfaces";
 
-const LeftBar = () => {
+const LeftBar = ({setToolName}: LeftBarInterface) => {
   const [submenuHoverState, setSubmenuHoverState] = useState("");
+
   const mouseEnterHandler = ({submenu, name}:ToolMouseEnterInterface):void => {
     if(submenu) setSubmenuHoverState(name);
   }
@@ -18,11 +20,11 @@ const LeftBar = () => {
     if(submenu) setSubmenuHoverState("");
   }
   const clickHandler = (type: ToolType, name: string) => {
-    switch(type) {
+      switch(type) {
         case ToolType.none: break;
-        case ToolType.yes: initializeSelectedTool(name); break;
+        case ToolType.yes: setToolName(name); break;
         default: break;
-    }
+      }
   }
   return (
     <div style={{ position: 'absolute', top: '15px', left: '15px' }}>
