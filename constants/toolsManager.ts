@@ -5,23 +5,17 @@ export class ToolManager {
     drawingAreaRef: Canvas | null = null;
     rect: RectangleTool | null = null;
 
-    constructor(drawingCanvas: Canvas | null, rect: RectangleTool | null) {
+    constructor(drawingCanvas: Canvas | null) {
         this.drawingAreaRef = drawingCanvas;
+    }
+
+    initializeTools() {
+        const rect = new RectangleTool(this.drawingAreaRef);
+        rect.init();
         this.rect = rect;
     }
 
-    // super() {}
-
-    // initializeTools() {
-    //     const rect = new RectangleTool(this.drawingAreaRef);
-    //     rect.init();
-    //     this.rect = rect;
-    //     // rect.start();
-    // }
-
-    startSelectedTool(toolName: string) {
-        console.log(toolName)
-        console.log(this.rect)
+    startSelectedTool(toolName: string | null) {
         switch(toolName) {
             case 'rect': this.rect?.start(); break;
             default: return;

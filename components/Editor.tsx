@@ -9,52 +9,48 @@ import DrawingArea from "./DrawingArea";
 import { useRef, useEffect, useState } from "react";
 import { Canvas } from "fabric/fabric-impl";
 import { VectorEditor } from "../constants/classes";
-import { RectangleTool } from "../constants/tools/rectangleTool";
 import { ToolManager } from "../constants/toolsManager";
 
 const Editor = () => {
   const drawingAreaRef = useRef<HTMLCanvasElement>(null);
   const drawingCanvas = useRef<Canvas | null>(null);
   const [toolName, setToolName] = useState<string | null>(null);
-
   const [editorState, setEditorState] = useState<VectorEditor | null>(null);
-  const [rectState, setRectState] = useState<RectangleTool | null>(null);
-
-  // TODO Works but it's not the best solution
-  // TODO I plan to move all of that to ToolManager object
-  // TODO But there was problem with managing tool and their state
+  const [toolManagerState, setToolManagerState] = useState<ToolManager | null>(null);
 
   useEffect(() => {
-    // * Initialize fabric canvas vector editor
+    // * Initialize fabric canvas vector editor and pass it into state
     const editor = new VectorEditor(drawingAreaRef);
     setEditorState(editor);
   }, []);
 
   useEffect(() => {
+    // * Initialize editor and create tool manager and pass it into state
     if(editorState) {
       editorState.init();
-      const rectTool = new RectangleTool(editorState.fabricCanvas);
-      setRectState(rectTool);
+      const manage = new ToolManager(editorState.fabricCanvas);
+      setToolManagerState(manage)
     }
   }, [editorState]);
 
   useEffect(() => {
-    if(rectState) rectState.init();
-  }, [rectState])
+    // * Initialize all tools
+    if(toolManagerState) toolManagerState.initializeTools();
+  }, [toolManagerState])
 
   useEffect(() => {
-    console.log(toolName);
-    if(toolName === 'rect' && rectState) {
-      rectState.start();
-      setToolName(null);
-    }
-  }, [toolName, rectState]);
+    // * Start selected tool and set tool name state as null to allow reinitialize
+    toolManagerState?.startSelectedTool(toolName);
+    setToolName(null);
+  }, [toolName, toolManagerState]);
 
   useEffect(() => {
+    // * setting canvas dimensions
     drawingCanvas.current?.setDimensions({
       width: window.innerWidth,
       height: window.innerHeight,
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.innerWidth, window.innerHeight]);
 
   return (
