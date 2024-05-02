@@ -108,19 +108,29 @@ export const Tools = [
         ]
     },
     {
-        vector: "TbTransformFilled",
+        vector: "TbTransform",
         name: "Transform tools",
         value: "transform",
         submenu: [
             {
-                vector: "RiText",
-                name: "Artistic text",
-                value: "artistic_text",
+                vector: "PiFlipHorizontal",
+                name: "Flip horizontal",
+                value: "flip_horizontal",
             },
             {
-                vector: "RiTextBlock",
-                name: "Frame text",
-                value: "frame_text",
+                vector: "PiFlipVertical",
+                name: "Flip vertical",
+                value: "flip_vertical",
+            },
+            {
+                vector: "LuRotateCw",
+                name: "Rotate clockwise",
+                value: "rotate_clockwise",
+            },
+            {
+                vector: "LuRotateCcw",
+                name: "Rotate anticlockwise",
+                value: "rotate_anticlockwise",
             },
         ]
     },
@@ -130,33 +140,36 @@ export const Tools = [
         value: "transform",
         submenu: [
             {
-                vector: "RiText",
-                name: "Artistic text",
-                value: "artistic_text",
+                vector: "TbLayersUnion",
+                name: "Add",
+                value: "add_shapes",
             },
             {
-                vector: "RiTextBlock",
-                name: "Frame text",
-                value: "frame_text",
+                vector: "TbLayersSubtract",
+                name: "Subtract",
+                value: "subtract_shapes",
+            },
+            {
+                vector: "TbLayersIntersect",
+                name: "Intersect",
+                value: "intersect_shapes",
+            },
+            {
+                vector: "TbLayersIntersect2",
+                name: "Xor",
+                value: "xor_shapes",
+            },
+            {
+                vector: "CgPathDivide",
+                name: "Divide",
+                value: "divide_shapes",
             },
         ]
     },
     {
-        vector: "LuAlignCenterHorizontal",
+        vector: "RiAlignItemLeftFill",
         name: "Alignment tools",
         value: "transform",
-        submenu: [
-            {
-                vector: "RiText",
-                name: "Artistic text",
-                value: "artistic_text",
-            },
-            {
-                vector: "RiTextBlock",
-                name: "Frame text",
-                value: "frame_text",
-            },
-        ]
     }
 ];
 

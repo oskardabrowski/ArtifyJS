@@ -1,0 +1,167 @@
+import {fabric} from 'fabric';
+import { Canvas } from "fabric/fabric-impl";
+
+/*
+ *
+ * Free drawing circle tool constructor class
+ *
+ */
+export class CircleTool {
+    editor: Canvas | null = null;
+    isActive: boolean = false;
+    isDrawing: boolean = false;
+    isHoldingShift: boolean = false;
+    x: number = 0;
+    y: number = 0;
+    constructor(editor: Canvas | null) {
+        this.editor = editor;
+    }
+
+    /*
+     *
+     * Start drawing shape
+     *
+     * Method adds circle to canvas and activate it to modify at next step
+     *
+     */
+    startDrawingOnMouseDown(e: any) {
+        if(this.isActive) {
+            this.isDrawing = true;
+            const mouse = this.editor?.getPointer(e.e);
+            this.x = mouse!.x;
+            this.y = mouse!.y;
+
+            const circle = new fabric.Ellipse({
+                left: this.x,
+                top: this.y,
+                fill: '#DFDFDF',
+                padding: 0,
+                originX: 'left',
+                originY: 'top',
+                rx: 0,
+                ry: 0,
+            });
+
+            this.editor?.add(circle);
+            this.editor?.renderAll();
+            this.editor?.setActiveObject(circle);
+        }
+    }
+
+    /*
+     *
+     * Modify shape by moving mouse
+     *
+     * Function takes shape, and modify it depends on moving direction
+     *
+     */
+    continueDrawingOnMouseMove(e: any) {
+        if(this.isActive) {
+            if(!this.isDrawing) {
+                return false;
+            }
+            this.editor!.selection = false;
+            const mouse = this.editor?.getPointer(e.e);
+            let x = mouse!.x;
+            let y = mouse!.y;
+            let w = Math.abs(mouse!.x - this.x) / 2;
+            let h = Math.abs(mouse!.y - this.y) / 2;
+
+            if (!w || !h) {
+                return false;
+            }
+
+            // TODO fix bug there is no time now
+            if(this.isHoldingShift) {
+                h = w;
+                // y = x;
+            }
+
+            const circle = this.editor?.getActiveObject();
+
+            const condition = {x: mouse!.x > this.x, y:mouse!.y > this.y};
+
+            // * Switch to handle moving direction
+            switch(JSON.stringify(condition)) {
+                // @ts-ignore
+                case JSON.stringify({x: true, y: true}): circle?.set('padding', 0).set('rx', w).set('ry', h); break;
+                // @ts-ignore
+                case JSON.stringify({x: false, y: true}): circle?.set('padding', 0).set('left', x).set('rx', w).set('ry', h); break;
+                // @ts-ignore
+                case JSON.stringify({x: true, y: false}): circle?.set('padding', 0).set('top', y).set('rx', w).set('ry', h); break;
+                // @ts-ignore
+                case JSON.stringify({x: false, y: false}): circle?.set('padding', 0).set('left', x).set('top', y).set('rx', w).set('ry', h); break;
+                // @ts-ignore
+                default: circle?.set('padding', 0).set('rx', w).set('ry', h); break;
+            }
+
+            this.editor?.renderAll();
+        }
+
+    }
+
+    /*
+     *
+     * Function stops drawing on mouse up event and brings back default editor options
+     *
+     */
+    stopDrawingOnMouseUp() {
+        if(this.isActive) {
+            const circle = this.editor?.getActiveObject();
+            // @ts-ignore
+            this.editor?.add(circle);
+            this.editor?.renderAll();
+
+            this.isActive = false;
+            this.isDrawing = false;
+
+            this.editor!.selection = true;
+            this.x = 0;
+            this.y = 0;
+            this.stop();
+        }
+    }
+
+    shiftDownHandler(e: any) {
+        if(this.isActive) {
+            if(e.key === "Shift") {
+                this.isHoldingShift = true;
+            }
+        }
+    }
+    shiftUpHandler(e: any) {
+        if(this.isActive) {
+            if(e.key === "Shift") {
+                this.isHoldingShift = false;
+            }
+        }
+    }
+
+    /*
+     *
+     * Initialize tool
+     *
+     */
+    init() {
+        const startDrawing = this.startDrawingOnMouseDown.bind(this);
+        const continueDrawing = this.continueDrawingOnMouseMove.bind(this);
+        const stopDrawing = this.stopDrawingOnMouseUp.bind(this);
+        const holdingShift = this.shiftDownHandler.bind(this);
+        const upShift = this.shiftUpHandler.bind(this);
+        this.editor?.on("mouse:down", (e) => startDrawing(e));
+        this.editor?.on("mouse:move", (e) => continueDrawing(e));
+        this.editor?.on("mouse:up", () => stopDrawing());
+        window.addEventListener('keydown', (e) => holdingShift(e));
+        window.addEventListener('keyup', (e) => upShift(e));
+    }
+
+    start() {
+        console.log('rect tool started');
+        this.isActive = true;
+    }
+
+    stop() {
+        console.log('rect tool stopped');
+        this.isActive = false;
+    }
+}

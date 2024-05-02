@@ -150,6 +150,21 @@ export class VectorEditor {
         });
 
         this.fabricCanvas?.add(rect);
+
+        const ellip = new fabric.Ellipse({
+          left: 300,
+          top: 300,
+          strokeWidth: 1,
+          stroke: 'none',
+          fill: 'red',
+          selectable: true,
+          originX: 'center',
+          originY: 'center',
+          rx: 200,
+          ry: 100
+        });
+
+        this.fabricCanvas?.add(ellip);
     }
 
     init() {

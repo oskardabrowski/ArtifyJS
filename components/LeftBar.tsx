@@ -37,7 +37,7 @@ const LeftBar = ({setToolName}: LeftBarInterface) => {
                     return <Tool clickHandler={clickHandler} valueProp={value} toolType={toolType} key={index} submenu={submenu} name={name} mouseEnterHandler={mouseEnterHandler} mouseLeaveHandler={mouseLeaveHandler}>
                         <Icons iconName={vector} />
                         {submenu &&
-                            <ToolSubmenu style={{ top: topMenu ? "auto" : "0", bottom: topMenu ? "0" : "auto", clipPath: submenuHoverState === name ? "polygon(0 0, 100% 0, 100% 100%, 0% 100%)" : "polygon(0 0, 0 0, 0 100%, 0% 100%)" }}>
+                            <ToolSubmenu style={{ top: topMenu ? "auto" : "0", bottom: topMenu ? "0" : "auto", clipPath: submenuHoverState === name ? "polygon(0 0, 110% 0, 110% 110%, 0% 110%)" : "polygon(0 0, 0 0, 0 100%, 0% 100%)" }}>
                                 {submenu.map((el, index) => {
                                     const {vector, name, value} = el;
                                     return <button onClick={() => clickHandler(ToolType.yes, value)} key={index} id={value}>

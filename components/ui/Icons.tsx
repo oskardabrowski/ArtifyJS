@@ -1,15 +1,17 @@
 "use client";
 import { IconsInterface } from "../../constants/interfaces";
 import { BsVectorPen, BsPen } from "react-icons/bs";
-import { IoShapesOutline, IoHandRightOutline, IoTextOutline, IoCropSharp } from "react-icons/io5";
+import { IoShapesOutline, IoHandRightOutline, IoTextOutline, IoCropSharp, IoAddCircle } from "react-icons/io5";
 import { MdOutlineGradient, MdOutlineVerticalAlignTop, MdOutlineVerticalAlignBottom } from "react-icons/md";
 import { TiImage } from "react-icons/ti";
 import { IoIosSearch } from "react-icons/io";
 import { PiNavigationArrow } from "react-icons/pi";
-import { TbArrowsMoveVertical, TbTransformFilled } from "react-icons/tb";
-import { LuCombine, LuAlignCenterHorizontal, LuCircle, LuTriangle, LuMoveUp, LuMoveDown } from "react-icons/lu";
+import { TbArrowsMoveVertical, TbTransform, TbLayersUnion, TbLayersSubtract, TbLayersIntersect, TbLayersIntersect2 } from "react-icons/tb";
+import { LuCombine, LuCircle, LuTriangle, LuMoveUp, LuMoveDown, LuRotateCw, LuRotateCcw } from "react-icons/lu";
 import { BiRectangle } from "react-icons/bi";
-import { RiTextBlock, RiText } from "react-icons/ri";
+import { RiTextBlock, RiText, RiAlignItemLeftFill } from "react-icons/ri";
+import { PiFlipHorizontal, PiFlipVertical } from "react-icons/pi";
+import { CgPathDivide } from "react-icons/cg";
 
 const Icons = ({iconName}: IconsInterface) => {
   return (
@@ -27,9 +29,9 @@ const Icons = ({iconName}: IconsInterface) => {
           'IoTextOutline': <IoTextOutline />,
           'IoCropSharp': <IoCropSharp />,
           'TbArrowsMoveVertical': <TbArrowsMoveVertical />,
-          'TbTransformFilled': <TbTransformFilled />,
+          'TbTransform': <TbTransform />,
           'LuCombine': <LuCombine />,
-          'LuAlignCenterHorizontal': <LuAlignCenterHorizontal />,
+          'RiAlignItemLeftFill': <RiAlignItemLeftFill />,
           'LuCircle': <LuCircle />,
           'BiRectangle': <BiRectangle />,
           'LuTriangle': <LuTriangle />,
@@ -39,6 +41,15 @@ const Icons = ({iconName}: IconsInterface) => {
           'MdOutlineVerticalAlignBottom': <MdOutlineVerticalAlignBottom />,
           'LuMoveUp': <LuMoveUp />,
           'LuMoveDown': <LuMoveDown />,
+          'PiFlipHorizontal': <PiFlipHorizontal />,
+          'PiFlipVertical': <PiFlipVertical />,
+          'LuRotateCw': <LuRotateCw />,
+          'LuRotateCcw': <LuRotateCcw />,
+          'TbLayersUnion': <TbLayersUnion />,
+          'TbLayersSubtract': <TbLayersSubtract />,
+          'TbLayersIntersect': <TbLayersIntersect />,
+          'TbLayersIntersect2': <TbLayersIntersect2 />,
+          'CgPathDivide': <CgPathDivide />,
         }[iconName]
       }
     </>
