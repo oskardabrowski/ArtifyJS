@@ -1,11 +1,13 @@
 import { Canvas } from "fabric/fabric-impl";
 import { RectangleTool } from "./tools/rectangleTool";
-import { CircleTool } from "./tools/circleTool";
+import { EllipseTool } from "./tools/ellipseTool";
+import { TriangleTool } from "./tools/triangleTool";
 
 export class ToolManager {
     drawingAreaRef: Canvas | null = null;
     rect: RectangleTool | null = null;
-    circle: CircleTool | null = null;
+    ellipse: EllipseTool | null = null;
+    triangle: TriangleTool | null = null;
 
     constructor(drawingCanvas: Canvas | null) {
         this.drawingAreaRef = drawingCanvas;
@@ -16,15 +18,20 @@ export class ToolManager {
         rect.init();
         this.rect = rect;
 
-        const circle = new CircleTool(this.drawingAreaRef);
-        circle.init();
-        this.circle = circle;
+        const ellipse = new EllipseTool(this.drawingAreaRef);
+        ellipse.init();
+        this.ellipse = ellipse;
+
+        const triangle = new TriangleTool(this.drawingAreaRef);
+        triangle.init();
+        this.triangle = triangle;
     }
 
     startSelectedTool(toolName: string | null) {
         switch(toolName) {
             case 'rect': this.rect?.start(); break;
-            case 'circle': this.circle?.start(); break;
+            case 'ellipse': this.ellipse?.start(); break;
+            case 'triangle': this.triangle?.start(); break;
             default: return;
         }
     }

@@ -28,8 +28,8 @@ export const Tools = [
             },
             {
                 vector: "LuCircle",
-                name: "Circle",
-                value: "circle",
+                name: "Ellipse",
+                value: "ellipse",
             },
             {
                 vector: "LuTriangle",

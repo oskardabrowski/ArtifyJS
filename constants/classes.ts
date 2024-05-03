@@ -90,7 +90,7 @@ export class VectorEditor {
           actionName: 'rotate',
           render: this.renderRotateControl,
           // @ts-ignore
-          cornerSize: 7,
+          cornerSize: 6,
           withConnection: true,
         });
     }
@@ -132,7 +132,7 @@ export class VectorEditor {
             actionHandler: actionHandler,
             render: this.renderControls,
             // @ts-ignore
-            cornerSize: 6,
+            cornerSize: 5,
             withConnection: false,
           });
         });

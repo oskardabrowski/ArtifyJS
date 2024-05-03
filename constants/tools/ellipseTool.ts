@@ -6,13 +6,15 @@ import { Canvas } from "fabric/fabric-impl";
  * Free drawing circle tool constructor class
  *
  */
-export class CircleTool {
+export class EllipseTool {
     editor: Canvas | null = null;
     isActive: boolean = false;
     isDrawing: boolean = false;
     isHoldingShift: boolean = false;
+    isUp: boolean = false;
     x: number = 0;
     y: number = 0;
+
     constructor(editor: Canvas | null) {
         this.editor = editor;
     }
@@ -62,8 +64,8 @@ export class CircleTool {
             }
             this.editor!.selection = false;
             const mouse = this.editor?.getPointer(e.e);
-            let x = mouse!.x;
-            let y = mouse!.y;
+            let px = mouse!.x;
+            let py = mouse!.y;
             let w = Math.abs(mouse!.x - this.x) / 2;
             let h = Math.abs(mouse!.y - this.y) / 2;
 
@@ -71,26 +73,32 @@ export class CircleTool {
                 return false;
             }
 
-            // TODO fix bug there is no time now
-            if(this.isHoldingShift) {
-                h = w;
-                // y = x;
-            }
-
             const circle = this.editor?.getActiveObject();
 
             const condition = {x: mouse!.x > this.x, y:mouse!.y > this.y};
+
+            if(this.isHoldingShift) {
+                h = w;
+                if(condition.y === false) {
+                    px = Math.abs(this.x - w * 2);
+                    py = Math.abs(this.y - w * 2);
+                    this.isUp = true;
+                } else if(condition.y === true && this.isUp === true) {
+                    this.isUp = false;
+                    circle?.set('left', this.x).set('top', this.y);
+                }
+            }
 
             // * Switch to handle moving direction
             switch(JSON.stringify(condition)) {
                 // @ts-ignore
                 case JSON.stringify({x: true, y: true}): circle?.set('padding', 0).set('rx', w).set('ry', h); break;
                 // @ts-ignore
-                case JSON.stringify({x: false, y: true}): circle?.set('padding', 0).set('left', x).set('rx', w).set('ry', h); break;
+                case JSON.stringify({x: false, y: true}): circle?.set('padding', 0).set('left', px).set('rx', w).set('ry', h); break;
                 // @ts-ignore
-                case JSON.stringify({x: true, y: false}): circle?.set('padding', 0).set('top', y).set('rx', w).set('ry', h); break;
+                case JSON.stringify({x: true, y: false}): circle?.set('padding', 0).set('top', py).set('rx', w).set('ry', h); break;
                 // @ts-ignore
-                case JSON.stringify({x: false, y: false}): circle?.set('padding', 0).set('left', x).set('top', y).set('rx', w).set('ry', h); break;
+                case JSON.stringify({x: false, y: false}): circle?.set('padding', 0).set('left', px).set('top', py).set('rx', w).set('ry', h); break;
                 // @ts-ignore
                 default: circle?.set('padding', 0).set('rx', w).set('ry', h); break;
             }
@@ -156,12 +164,11 @@ export class CircleTool {
     }
 
     start() {
-        console.log('rect tool started');
         this.isActive = true;
     }
 
     stop() {
-        console.log('rect tool stopped');
         this.isActive = false;
+        this.isHoldingShift = false;
     }
 }

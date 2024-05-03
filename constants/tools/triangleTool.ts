@@ -3,10 +3,10 @@ import { Canvas } from "fabric/fabric-impl";
 
 /*
  *
- * Free drawing rectangle tool constructor class
+ * Free drawing triangle tool constructor class
  *
  */
-export class RectangleTool {
+export class TriangleTool {
     editor: Canvas | null = null;
     isActive: boolean = false;
     isDrawing: boolean = false;
@@ -22,7 +22,7 @@ export class RectangleTool {
      *
      * Start drawing shape
      *
-     * Method adds rectangle to canvas and activate it to modify at next step
+     * Method adds triangle to canvas and activate it to modify at next step
      *
      */
     startDrawingOnMouseDown(e: any) {
@@ -32,7 +32,7 @@ export class RectangleTool {
             this.x = mouse!.x;
             this.y = mouse!.y;
 
-            const rectangle = new fabric.Rect({
+            const triangle = new fabric.Triangle({
                 width: 0,
                 height: 0,
                 left: this.x,
@@ -41,9 +41,9 @@ export class RectangleTool {
                 padding: 0,
             });
 
-            this.editor?.add(rectangle);
+            this.editor?.add(triangle);
             this.editor?.renderAll();
-            this.editor?.setActiveObject(rectangle);
+            this.editor?.setActiveObject(triangle);
         }
     }
 
@@ -70,7 +70,7 @@ export class RectangleTool {
                 return false;
             }
 
-            const rectangle = this.editor?.getActiveObject();
+            const triangle = this.editor?.getActiveObject();
 
             const condition = {x: mouse!.x > this.x, y:mouse!.y > this.y};
 
@@ -82,17 +82,17 @@ export class RectangleTool {
                     this.isUp = true;
                 } else if(condition.y === true && this.isUp === true) {
                     this.isUp = false;
-                    rectangle?.set('left', this.x).set('top', this.y);
+                    triangle?.set('left', this.x).set('top', this.y);
                 }
             }
 
             // * Switch to handle moving direction
             switch(JSON.stringify(condition)) {
-                case JSON.stringify({x: true, y: true}): rectangle?.set('padding', 0).set('width', w).set('height', h); break;
-                case JSON.stringify({x: false, y: true}): rectangle?.set('padding', 0).set('left', px).set('width', w).set('height', h); break;
-                case JSON.stringify({x: true, y: false}): rectangle?.set('padding', 0).set('top', py).set('width', w).set('height', h); break;
-                case JSON.stringify({x: false, y: false}): rectangle?.set('padding', 0).set('left', px).set('top', py).set('width', w).set('height', h); break;
-                default: rectangle?.set('padding', 0).set('width', w).set('height', h); break;
+                case JSON.stringify({x: true, y: true}): triangle?.set('padding', 0).set('width', w).set('height', h); break;
+                case JSON.stringify({x: false, y: true}): triangle?.set('padding', 0).set('left', px).set('width', w).set('height', h); break;
+                case JSON.stringify({x: true, y: false}): triangle?.set('padding', 0).set('top', py).set('width', w).set('height', h); break;
+                case JSON.stringify({x: false, y: false}): triangle?.set('padding', 0).set('left', px).set('top', py).set('width', w).set('height', h); break;
+                default: triangle?.set('padding', 0).set('width', w).set('height', h); break;
             }
 
             this.editor?.renderAll();
@@ -107,9 +107,9 @@ export class RectangleTool {
      */
     stopDrawingOnMouseUp() {
         if(this.isActive) {
-            const rectangle = this.editor?.getActiveObject();
+            const triangle = this.editor?.getActiveObject();
             // @ts-ignore
-            this.editor?.add(rectangle);
+            this.editor?.add(triangle);
             this.editor?.renderAll();
 
             this.isActive = false;
