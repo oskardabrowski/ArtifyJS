@@ -14,6 +14,7 @@ export class RectangleTool {
     isUp: boolean = false;
     x: number = 0;
     y: number = 0;
+
     constructor(editor: Canvas | null) {
         this.editor = editor;
     }

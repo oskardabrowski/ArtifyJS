@@ -50,8 +50,8 @@ export const Tools = [
     },
     {
         vector: "IoHandRightOutline",
-        name: "Move",
-        value: "move"
+        name: "Pan",
+        value: "pan"
     },
     {
         vector: "IoIosSearch",

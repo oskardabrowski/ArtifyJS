@@ -80,10 +80,12 @@ export class EllipseTool {
             if(this.isHoldingShift) {
                 h = w;
                 if(condition.y === false) {
+                    console.log('Condition 1');
                     px = Math.abs(this.x - w * 2);
                     py = Math.abs(this.y - w * 2);
                     this.isUp = true;
-                } else if(condition.y === true && this.isUp === true) {
+                } else if (condition.y === true && this.isUp === true) {
+                    console.log('Condition 2');
                     this.isUp = false;
                     circle?.set('left', this.x).set('top', this.y);
                 }

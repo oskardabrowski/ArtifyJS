@@ -2,12 +2,15 @@ import { Canvas } from "fabric/fabric-impl";
 import { RectangleTool } from "./tools/rectangleTool";
 import { EllipseTool } from "./tools/ellipseTool";
 import { TriangleTool } from "./tools/triangleTool";
+import { ZoomTool } from "./tools/zoomTool";
+import { PanTool } from "./tools/panTool";
 
 export class ToolManager {
     drawingAreaRef: Canvas | null = null;
     rect: RectangleTool | null = null;
     ellipse: EllipseTool | null = null;
     triangle: TriangleTool | null = null;
+    pan: PanTool | null = null;
 
     constructor(drawingCanvas: Canvas | null) {
         this.drawingAreaRef = drawingCanvas;
@@ -25,6 +28,12 @@ export class ToolManager {
         const triangle = new TriangleTool(this.drawingAreaRef);
         triangle.init();
         this.triangle = triangle;
+
+        const zoom = new ZoomTool(this.drawingAreaRef);
+        zoom.init();
+
+        const pan = new PanTool(this.drawingAreaRef);
+        pan.init();
     }
 
     startSelectedTool(toolName: string | null) {
@@ -32,6 +41,7 @@ export class ToolManager {
             case 'rect': this.rect?.start(); break;
             case 'ellipse': this.ellipse?.start(); break;
             case 'triangle': this.triangle?.start(); break;
+            case 'pan': this.pan?.start(); break;
             default: return;
         }
     }
