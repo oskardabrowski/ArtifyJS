@@ -22,10 +22,21 @@ export class PanTool {
             this.editor!.selection = false;
             this.lastPosX = e.clientX;
             this.lastPosY = e.clientY;
+        } else if (e.button === 0 && this.isActive) {
+            this.isHoldingWheel = true;
+            this.editor!.selection = false;
+            this.lastPosX = e.clientX;
+            this.lastPosY = e.clientY;
         }
+
     }
     wheelUpHandler(e: any) {
         if(e.button === 1) {
+            this.isHoldingWheel = false;
+            this.editor!.selection = true;
+            this.lastPosX = 0;
+            this.lastPosY = 0;
+        } else if (e.button === 0 && this.isActive) {
             this.isHoldingWheel = false;
             this.editor!.selection = true;
             this.lastPosX = 0;
@@ -40,7 +51,7 @@ export class PanTool {
      */
     init() {
         this.editor?.on('mouse:move', (e) => {
-            if(this.isHoldingWheel || this.isActive) {
+            if(this.isHoldingWheel) {
                 const event = e.e;
                 let vpt = this.editor?.viewportTransform;
                 if(vpt) {
@@ -61,6 +72,16 @@ export class PanTool {
     }
 
     start() {
-        this.isActive = true;
+        if(this.isActive) {
+            this.stop();
+        } else {
+            this.isActive = true;
+            this.editor!.selection = false;
+        }
+    }
+
+    stop() {
+        this.isActive = false;
+        this.editor!.selection = true;
     }
 }

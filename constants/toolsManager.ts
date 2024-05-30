@@ -34,6 +34,7 @@ export class ToolManager {
 
         const pan = new PanTool(this.drawingAreaRef);
         pan.init();
+        this.pan = pan;
     }
 
     startSelectedTool(toolName: string | null) {

@@ -35,8 +35,6 @@ export class ZoomTool {
                 const delta = e.e.deltaY;
                 let zoom = this.editor?.getZoom();
                 zoom! *= 0.999 ** delta;
-                if (zoom! > 20) zoom = 20;
-                if (zoom! < 0.01) zoom = 0.01;
                 this.editor?.zoomToPoint({ x: e.e.offsetX, y: e.e.offsetY }, zoom!);
                 e.e.preventDefault();
                 e.e.stopPropagation();
