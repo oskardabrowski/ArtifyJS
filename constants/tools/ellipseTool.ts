@@ -1,6 +1,8 @@
 import {fabric} from 'fabric';
 import { Canvas } from "fabric/fabric-impl";
 
+// TODO Handle -x and -y while drawing
+
 /*
  *
  * Free drawing circle tool constructor class
@@ -83,6 +85,8 @@ export class EllipseTool {
                     console.log('Condition 1');
                     px = Math.abs(this.x - w * 2);
                     py = Math.abs(this.y - w * 2);
+                    if(this.y < 0) py = this.y - w;
+                    if(this.x < 0) px = this.x - w;
                     this.isUp = true;
                 } else if (condition.y === true && this.isUp === true) {
                     console.log('Condition 2');

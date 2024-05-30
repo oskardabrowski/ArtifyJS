@@ -1,6 +1,8 @@
 import {fabric} from 'fabric';
 import { Canvas } from "fabric/fabric-impl";
 
+// TODO Handle -x and -y while drawing
+
 /*
  *
  * Free drawing triangle tool constructor class
@@ -79,6 +81,8 @@ export class TriangleTool {
                 if(condition.y === false) {
                     px = Math.abs(this.x - w);
                     py = Math.abs(this.y - w);
+                    if(this.y < 0) py = this.y - w;
+                    if(this.x < 0) px = this.x - w;
                     this.isUp = true;
                 } else if(condition.y === true && this.isUp === true) {
                     this.isUp = false;
