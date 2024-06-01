@@ -4,6 +4,7 @@ import { EllipseTool } from "./tools/ellipseTool";
 import { TriangleTool } from "./tools/triangleTool";
 import { ZoomTool } from "./tools/zoomTool";
 import { PanTool } from "./tools/panTool";
+import { PenTool } from "./tools/PenTool";
 
 export class ToolManager {
     drawingAreaRef: Canvas | null = null;
@@ -11,6 +12,7 @@ export class ToolManager {
     ellipse: EllipseTool | null = null;
     triangle: TriangleTool | null = null;
     pan: PanTool | null = null;
+    pen: PenTool | null = null;
 
     constructor(drawingCanvas: Canvas | null) {
         this.drawingAreaRef = drawingCanvas;
@@ -35,6 +37,10 @@ export class ToolManager {
         const pan = new PanTool(this.drawingAreaRef);
         pan.init();
         this.pan = pan;
+
+        const pen = new PenTool(this.drawingAreaRef);
+        pen.init();
+        this.pen = pen;
     }
 
     startSelectedTool(toolName: string | null) {
@@ -43,6 +49,7 @@ export class ToolManager {
             case 'ellipse': this.ellipse?.start(); break;
             case 'triangle': this.triangle?.start(); break;
             case 'pan': this.pan?.start(); break;
+            case 'pen': this.pen?.start(); break;
             default: return;
         }
     }

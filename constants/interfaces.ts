@@ -32,3 +32,8 @@ export interface ToolPropsInterface {
     mouseLeaveHandler: (submenu: {vector: string; name: string; value: string;}[] | undefined) => void,
     children: any
 }
+
+export interface BezierLinePoint {
+    x: number,
+    y: number
+}

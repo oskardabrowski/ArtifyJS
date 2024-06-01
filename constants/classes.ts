@@ -165,6 +165,16 @@ export class VectorEditor {
         });
 
         this.fabricCanvas?.add(ellip);
+
+        const path = new fabric.Path("M 0,0 C 50,50 100,100 150,150 ", {
+          strokeWidth: 6,
+          stroke: "red",
+          fill: '',
+          left: 500,
+          top: 100,
+        });
+
+        this.fabricCanvas?.add(path);
     }
 
     init() {
