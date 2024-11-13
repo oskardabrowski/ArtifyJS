@@ -2,11 +2,12 @@
 
 import Bar from "./ui/Bar";
 import ColorChooser from "./ui/ColorChooser";
+import { BottomBars as RightBarStyle } from "./ui/UiStyles";
 
 const RightBar = () => {
 
     return (
-        <div style={{ position: 'absolute', top: '15px', right: '15px' }}>
+        <RightBarStyle style={{ position: 'absolute', top: '65px', right: '10px' }}>
             <Bar>
                 <div>
 
@@ -29,7 +30,7 @@ const RightBar = () => {
 
                 </div>
             </Bar>
-        </div>
+        </RightBarStyle>
     )
 }
 

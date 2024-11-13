@@ -9,6 +9,7 @@ import { ToolMouseEnterInterface } from "../constants/interfaces";
 import { initializeSelectedTool } from "../constants/functions";
 import { ToolType } from "../constants/enums";
 import { LeftBarInterface } from "../constants/interfaces";
+import { BottomBars as LeftBarStyle } from "./ui/UiStyles";
 
 const LeftBar = ({setToolName}: LeftBarInterface) => {
   const [submenuHoverState, setSubmenuHoverState] = useState("");
@@ -27,7 +28,7 @@ const LeftBar = ({setToolName}: LeftBarInterface) => {
       }
   }
   return (
-    <div style={{ position: 'absolute', top: '15px', left: '15px' }}>
+    <LeftBarStyle style={{ position: 'absolute', top: '65px', left: '10px' }}>
         <Bar>
             {
                 Tools.map((el, index) => {
@@ -51,7 +52,7 @@ const LeftBar = ({setToolName}: LeftBarInterface) => {
                 })
             }
         </Bar>
-    </div>
+    </LeftBarStyle>
   )
 }
 

@@ -6,7 +6,7 @@ import StyledComponentsRegistry from "../../lib/registry";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Coal Draw",
+  title: "ArtifyJS",
 };
 
 export default function RootLayout({

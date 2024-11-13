@@ -5,7 +5,7 @@ import Movable from "./Movable";
 const Bar = ({children}: any) => {
   return (
     <MovableBarStyle>
-        <Movable />
+        {/* <Movable /> */}
         {
             children
         }

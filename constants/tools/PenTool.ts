@@ -105,10 +105,10 @@ export class PenTool extends Tool {
 
             const firstPoint = linePoints[0];
 
-            let zeroPoint = {
-                x: linePoints[0].x,
-                y: linePoints[0].y,
-            };
+            // let zeroPoint = {
+            //     x: linePoints[0].x,
+            //     y: linePoints[0].y,
+            // };
             // let zeroPoint = {
             //     x: 0,
             //     y: 0,
@@ -118,11 +118,32 @@ export class PenTool extends Tool {
 
             console.log(mainGroupCoords)
 
+            let zeroPoint = {
+                x: linePoints[0].x,
+                y: linePoints[0].y,
+            };
+
+            const topLeftPoint = {
+                x: mainGroupCoords[0].x,
+                y: mainGroupCoords[0].y,
+            };
+
+            const bottomRightPoint = {
+                x: mainGroupCoords[2].x,
+                y: mainGroupCoords[2].y,
+            };
+
+            const leftMargin = topLeftPoint.x - bottomRightPoint.x;
+            const topMargin = topLeftPoint.y - bottomRightPoint.y;
+
+            console.log(leftMargin);
+            console.log(topMargin);
+
 
 
             linePoints.map((point) => {
-                if (zeroPoint.x > point.x) zeroPoint.x = point.x;
-                if (zeroPoint.y > point.y) zeroPoint.y = point.y;
+                if (zeroPoint.x < point.x) zeroPoint.x = point.x;
+                if (zeroPoint.y < point.y) zeroPoint.y = point.y;
             });
 
             const mPoint = {
@@ -130,28 +151,47 @@ export class PenTool extends Tool {
                 y: firstPoint.y - zeroPoint.y
             }
 
+            console.log(mPoint)
+
             let LineString = `M ${mPoint.x},${mPoint.y} L `;
             // let LineString = `M 0,0 L `;
 
-            linePoints.map((point) => {
-                LineString += `${point.x - zeroPoint.x},${point.y - zeroPoint.y} `;
+            console.log(linePoints);
+
+            linePoints.filter((point, index) => {
+                if(index > 0) {
+                    LineString += `${point.x - zeroPoint.x},${point.y - zeroPoint.y} `;
+                }
             });
 
             // "M 50,150 C 150,50 300,250 350,100 "
 
             console.log(LineString)
+            console.log(zeroPoint)
 
             this.bezierLineShape = new fabric.Path(LineString, {
               strokeWidth: 6,
               stroke: "blue",
             //   left: 0,
             //   top: 0,
-              left: zeroPoint.x - 2.5,
-              top: zeroPoint.y - 2.5,
+            //   pathOffset: {x: 0, y: 0},
+            //   left: zeroPoint.x - 2.5,
+            //   top: zeroPoint.y - 2.5,
             //   left: zeroPoint.x - 2.5,
             //   top: zeroPoint.y - 2.5,
               fill: 'red',
               padding: 0,
+            });
+
+            console.log(this.bezierLineShape);
+
+            // this.bezierLineShape.pathOffset = {x: 0, y: 0};
+            // this.bezierLineShape.top = this.bezierLineShape.pathOffset.x * -1;
+            // this.bezierLineShape.top = {x: 0, y: 0};
+
+            this.bezierLineShape.set({
+              left: this.bezierLineShape.left! - this.bezierLineShape.pathOffset.x - 1.25,
+              top: this.bezierLineShape.top! - this.bezierLineShape.pathOffset.y - 1.25
             });
 
             this.mainGroup.insertAt(this.bezierLineShape, 0, false);

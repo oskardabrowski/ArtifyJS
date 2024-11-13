@@ -1,5 +1,12 @@
 import styled from "styled-components";
 
+// ! Main colors
+// * #1E1E1E
+// * #303236
+// * #6400FF 100, 0, 255
+// * #FF00BB 255, 0, 187
+
+
 export const MovableBar = styled.div`
     width: 100%;
     height: auto;
@@ -28,13 +35,21 @@ export const MovableBar = styled.div`
 `;
 
 export const MovableBarStyle = styled.div`
-    background-color: white;
+    /* background-color: #303236; */
     padding: 0rem;
     border-radius: 5px;
-    color: black;
+    color: white;
     font-size: 1.25rem;
-    box-shadow: 3px 3px 0px rgba(0,0,0, 1);
-    border: 2px solid black;
+    /* box-shadow: 3px 3px 0px rgba(0,0,0, 1); */
+    border: 1px solid white;
+    min-height: 45px;
+
+    background: rgba(0, 0, 0, 0.2);
+    /* border-radius: 16px; */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1.25px solid rgba(167, 110, 255, 0.3);
 `;
 
 export const ToolContainer = styled.button`
@@ -43,7 +58,7 @@ export const ToolContainer = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
-    color: black;
+    color: white;
     position: relative;
 `;
 
@@ -59,12 +74,19 @@ export const DrawingAreaCanvas = styled.div`
 export const ToolSubmenu = styled.div`
     position: absolute;
     left: 100%;
-    background-color: white;
+    /* background-color: #0D1324; */
     border: 2px solid black;
     border-radius: 5px;
-    box-shadow: 3px 3px 0px rgba(0,0,0, 1);
+    /* box-shadow: 3px 3px 0px rgba(0,0,0, 1); */
     width: max-content;
     transition: all .25s ease-in-out;
+    color: white;
+
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1.25px solid rgba(167, 110, 255, 0.3);
 
     & > button {
         padding: .5rem 1.2rem .5rem 1.2rem;
@@ -72,6 +94,7 @@ export const ToolSubmenu = styled.div`
         display: flex;
         align-items: center;
         justify-content: start;
+        backdrop-filter: blur(15px);
         &:hover {
             background: black;
             color: white;
@@ -80,5 +103,14 @@ export const ToolSubmenu = styled.div`
             padding-left: .5rem;
             font-size: .95rem;
         }
+    }
+`;
+
+export const TopBar = styled.div`
+    width: calc(100% - 20px);
+`;
+export const BottomBars = styled.div`
+    & > div {
+        height: calc(100dvh - 75px);
     }
 `;

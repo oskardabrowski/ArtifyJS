@@ -2,6 +2,7 @@
 import "../vendors/chromoselector.min.css";
 import "../vendors/chromoselector.min.js";
 import {EditorField} from './GlobalStyles';
+import TopBar from './TopBar';
 import LeftBar from './LeftBar';
 import RightBar from './RightBar';
 import DrawingArea from "./DrawingArea";
@@ -54,10 +55,11 @@ const Editor = () => {
   }, [window.innerWidth, window.innerHeight]);
 
   return (
-    <EditorField style={{ background: "white" }}>
+    <EditorField style={{ background: "#1E1E1E" }}>
         <DrawingArea drawingAreaRef={drawingAreaRef} />
         <LeftBar setToolName={setToolName} />
         <RightBar />
+        <TopBar />
     </EditorField>
   )
 }
