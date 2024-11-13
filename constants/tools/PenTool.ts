@@ -9,6 +9,12 @@ export class PenTool extends Tool {
     bezierLinePoints: BezierLinePoint[] | [] = [];
     bezierLineShape: fabric.Path | null = null;
     isMouseDown: boolean = false;
+    mainGroup = new fabric.Group([], {
+        left: 0,
+        top: 0,
+    });
+    controlsGroup = new fabric.Group([], {});
+    pathGroup = new fabric.Group([], {});
     constructor(editor: Canvas | null) {
         super(editor, '')
     }
@@ -48,7 +54,8 @@ export class PenTool extends Tool {
                 console.info(this.currentMousePoint);
 
                 console.info(this.editor!.getZoom());
-                this.editor?.add(this.currentMousePoint);
+                this.mainGroup.addWithUpdate(this.currentMousePoint);
+                // this.editor?.add(this.currentMousePoint);
                 this.editor?.renderAll();
 
                 console.info(this.editor!.getObjects().indexOf(this.currentMousePoint));
@@ -71,11 +78,11 @@ export class PenTool extends Tool {
 
         console.log('Line started!');
 
-        let linePoints: number[] | [] = [];
+        let linePoints: { x: number; y: number; }[] | [] = [];
 
         this.bezierLinePoints.forEach((point) => {
             const {x, y}: BezierLinePoint = point;
-            linePoints = [...linePoints, x ,y]
+            linePoints = [...linePoints, {x: x ,y: y}]
 
             if(lowestX === null || lowestX > x) {
                 lowestX = x;
@@ -85,7 +92,7 @@ export class PenTool extends Tool {
             }
         });
 
-        if(this.bezierLineShape != null) this.editor!.remove(this.bezierLineShape);
+        if(this.bezierLineShape != null) this.mainGroup.remove(this.bezierLineShape);
 
         if(lowestX != null && lowestY != null) {
             console.log('Line created!');
@@ -96,15 +103,61 @@ export class PenTool extends Tool {
             //     stroke: 'red'
             // });
 
-            this.bezierLineShape = new fabric.Path("M 50,150 C 150,50 300,250 350,100 ", {
-              strokeWidth: 6,
-              stroke: "white",
-              left: 10,
-              top: 100,
+            const firstPoint = linePoints[0];
+
+            let zeroPoint = {
+                x: linePoints[0].x,
+                y: linePoints[0].y,
+            };
+            // let zeroPoint = {
+            //     x: 0,
+            //     y: 0,
+            // };
+
+            const mainGroupCoords = this.mainGroup.getCoords();
+
+            console.log(mainGroupCoords)
+
+
+
+            linePoints.map((point) => {
+                if (zeroPoint.x > point.x) zeroPoint.x = point.x;
+                if (zeroPoint.y > point.y) zeroPoint.y = point.y;
             });
 
-            this.editor?.add(this.bezierLineShape);
+            const mPoint = {
+                x: firstPoint.x - zeroPoint.x,
+                y: firstPoint.y - zeroPoint.y
+            }
+
+            let LineString = `M ${mPoint.x},${mPoint.y} L `;
+            // let LineString = `M 0,0 L `;
+
+            linePoints.map((point) => {
+                LineString += `${point.x - zeroPoint.x},${point.y - zeroPoint.y} `;
+            });
+
+            // "M 50,150 C 150,50 300,250 350,100 "
+
+            console.log(LineString)
+
+            this.bezierLineShape = new fabric.Path(LineString, {
+              strokeWidth: 6,
+              stroke: "blue",
+            //   left: 0,
+            //   top: 0,
+              left: zeroPoint.x - 2.5,
+              top: zeroPoint.y - 2.5,
+            //   left: zeroPoint.x - 2.5,
+            //   top: zeroPoint.y - 2.5,
+              fill: 'red',
+              padding: 0,
+            });
+
+            this.mainGroup.insertAt(this.bezierLineShape, 0, false);
             this.editor?.renderAll();
+
+            console.log(this.mainGroup)
         }
 
 
@@ -144,9 +197,17 @@ export class PenTool extends Tool {
     }
 
     start() {
-        console.info('Started')
-        this.editor!.selection = false;
-        this.isActive = true;
+        if(this.isActive) {
+            this.stop()
+        } else {
+
+            this.editor?.add(this.mainGroup);
+            // this.mainGroup.add(this.controlsGroup);
+            // this.mainGroup.add(this.pathGroup);
+
+            this.editor!.selection = false;
+            this.isActive = true;
+        }
     }
 
     stop() {
