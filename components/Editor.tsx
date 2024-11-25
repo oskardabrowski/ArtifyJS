@@ -55,11 +55,11 @@ const Editor = () => {
   }, [window.innerWidth, window.innerHeight]);
 
   return (
-    <EditorField style={{ background: "#1E1E1E" }}>
+    <EditorField style={{ background: "#1A1A1A" }}>
         <DrawingArea drawingAreaRef={drawingAreaRef} />
         <LeftBar setToolName={setToolName} />
         <RightBar />
-        <TopBar />
+        <TopBar setToolName={setToolName} />
     </EditorField>
   )
 }

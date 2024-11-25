@@ -15,6 +15,7 @@ const createWindow = () => {
 		webPreferences: {
 			preload: path.join(__dirname, "preload.js"),
 		},
+		icon: `${__dirname}/../public/ArtifyJsIcon.png`,
 	});
 	win.maximize();
 	win.show();

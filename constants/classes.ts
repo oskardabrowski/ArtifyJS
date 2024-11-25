@@ -123,11 +123,12 @@ export class VectorEditor {
 
     renderCustomControls() {
         ScaleControls.map((el) => {
-          const {name, x, y, actionHandler} = el;
+          const {name, x, y, actionHandler, cursorStyle} = el;
 
           fabric.Object.prototype.controls[name] = new fabric.Control({
             x: x,
             y: y,
+            cursorStyle: cursorStyle,
             // @ts-ignore
             actionHandler: actionHandler,
             render: this.renderControls,

@@ -8,10 +8,10 @@ import { useEffect, useState } from "react";
 import { ToolMouseEnterInterface } from "../constants/interfaces";
 import { initializeSelectedTool } from "../constants/functions";
 import { ToolType } from "../constants/enums";
-import { LeftBarInterface } from "../constants/interfaces";
+import { ToolNameInterface } from "../constants/interfaces";
 import { BottomBars as LeftBarStyle } from "./ui/UiStyles";
 
-const LeftBar = ({setToolName}: LeftBarInterface) => {
+const LeftBar = ({setToolName}: ToolNameInterface) => {
   const [submenuHoverState, setSubmenuHoverState] = useState("");
 
   const mouseEnterHandler = ({submenu, name}:ToolMouseEnterInterface):void => {

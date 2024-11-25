@@ -37,7 +37,7 @@ export class Tool {
                     height: 0,
                     left: this.x,
                     top: this.y,
-                    fill: '#DFDFDF',
+                    fill: '#2563EB',
                     padding: 0,
                 });
             } else if (shapeType === 'Triangle') {
@@ -46,14 +46,14 @@ export class Tool {
                     height: 0,
                     left: this.x,
                     top: this.y,
-                    fill: '#DFDFDF',
+                    fill: '#2563EB',
                     padding: 0,
                 });
             } else if (shapeType === 'Ellipse') {
                 shape = new fabric.Ellipse({
                     left: this.x,
                     top: this.y,
-                    fill: '#DFDFDF',
+                    fill: '#2563EB',
                     padding: 0,
                     originX: 'left',
                     originY: 'top',
@@ -74,7 +74,7 @@ export class Tool {
      *
      * Modify shape by moving mouse
      *
-     * Function takes shape, and modify it depends on moving direction
+     * Method takes shape, and modify it depends on moving direction
      *
      */
     continueDrawingOnMouseMove(e: any) {
@@ -143,7 +143,7 @@ export class Tool {
 
     /*
      *
-     * Function stops drawing on mouse up event and brings back default editor options
+     * Method stops drawing on mouse up event and brings back default editor options
      *
      */
     stopDrawingOnMouseUp() {
@@ -181,6 +181,24 @@ export class Tool {
         window.addEventListener('keyup', (e) => upShift(e));
     }
 
+    /*
+     *
+     * Method blocking all objects while drawing
+     *
+     */
+    blockObjectsWhileDrawing() {
+        this.editor?.forEachObject((obj) => obj.selectable = false);
+    }
+
+    /*
+     *
+     * Method unblocking all objects after drawing
+     *
+     */
+    unblockObjectsAfterDrawing() {
+        this.editor?.forEachObject((obj) => obj.selectable = true);
+    }
+
     shiftDownHandler(e: any) {
         if(this.isActive) {
             if(e.key === "Shift") {
@@ -198,11 +216,13 @@ export class Tool {
 
     start() {
         this.isActive = true;
+        this.blockObjectsWhileDrawing();
     }
 
     stop() {
         this.isActive = false;
         this.isHoldingShift = false;
+        this.unblockObjectsAfterDrawing();
     }
 
 

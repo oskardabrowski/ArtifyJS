@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 // ! Main colors
-// * #1E1E1E
-// * #303236
-// * #6400FF 100, 0, 255
-// * #FF00BB 255, 0, 187
+// * #141414
+// * #1A1A1A
+// * #1E40AF 30, 64, 175
+// * #2563EB 37, 99, 235
 
 
 export const MovableBar = styled.div`
@@ -35,7 +35,7 @@ export const MovableBar = styled.div`
 `;
 
 export const MovableBarStyle = styled.div`
-    /* background-color: #303236; */
+    background-color: #141414;
     padding: 0rem;
     border-radius: 5px;
     color: white;
@@ -44,12 +44,24 @@ export const MovableBarStyle = styled.div`
     border: 1px solid white;
     min-height: 45px;
 
-    background: rgba(0, 0, 0, 0.2);
-    /* border-radius: 16px; */
+    /* background: rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1.25px solid rgba(167, 110, 255, 0.3);
+    -webkit-backdrop-filter: blur(15px); */
+    border: 1.5px solid rgba(30, 64, 175, 0.4);
+`;
+
+export const MovableBarStyleFlex = styled.div`
+    background-color: #141414;
+    padding: 0rem;
+    border-radius: 5px;
+    color: white;
+    font-size: 1.25rem;
+    display: flex;
+    border: 1px solid white;
+    min-height: 45px;
+    border: 1.5px solid rgba(30, 64, 175, 0.4);
 `;
 
 export const ToolContainer = styled.button`
@@ -74,7 +86,7 @@ export const DrawingAreaCanvas = styled.div`
 export const ToolSubmenu = styled.div`
     position: absolute;
     left: 100%;
-    /* background-color: #0D1324; */
+    background-color: #141414;
     border: 2px solid black;
     border-radius: 5px;
     /* box-shadow: 3px 3px 0px rgba(0,0,0, 1); */
@@ -82,11 +94,11 @@ export const ToolSubmenu = styled.div`
     transition: all .25s ease-in-out;
     color: white;
 
-    background: rgba(0, 0, 0, 0.2);
+    /* background: rgba(0, 0, 0, 0.2);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1.25px solid rgba(167, 110, 255, 0.3);
+    -webkit-backdrop-filter: blur(15px); */
+    border: 1.25px solid rgba(30, 64, 175, 0.4);
 
     & > button {
         padding: .5rem 1.2rem .5rem 1.2rem;
@@ -108,6 +120,7 @@ export const ToolSubmenu = styled.div`
 
 export const TopBar = styled.div`
     width: calc(100% - 20px);
+    overflow: hidden;
 `;
 export const BottomBars = styled.div`
     & > div {

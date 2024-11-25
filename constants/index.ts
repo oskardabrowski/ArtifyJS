@@ -17,20 +17,21 @@ export const Tools = [
         value: "node"
     },
     {
+        vector: "BiRectangle",
+        name: "Rectangle",
+        value: "rect",
+    },
+    {
+        vector: "LuCircle",
+        name: "Ellipse",
+        value: "ellipse",
+    },
+    {
         vector: "IoShapesOutline",
         name: "Shapes",
         value: "bezier_curve",
         submenu: [
-            {
-                vector: "BiRectangle",
-                name: "Rectangle",
-                value: "rect",
-            },
-            {
-                vector: "LuCircle",
-                name: "Ellipse",
-                value: "ellipse",
-            },
+
             {
                 vector: "LuTriangle",
                 name: "Triangle",
@@ -173,12 +174,55 @@ export const Tools = [
     }
 ];
 
+export const TopBarTools = [
+    {
+        type: 'part',
+        tools: [
+            {
+                vector: "RiAlignItemLeftFill",
+                name: "Save project",
+                value: "transform",
+            },
+            {
+                vector: "RiAlignItemLeftFill",
+                name: "Print page",
+                value: "transform",
+            },
+            {
+                vector: "RiAlignItemLeftFill",
+                name: "document settings",
+                value: "transform",
+            },
+        ]
+    },
+    {
+        type: 'part',
+        tools: [
+            {
+                vector: "RiAlignItemLeftFill",
+                name: "Save project",
+                value: "transform",
+            },
+            {
+                vector: "RiAlignItemLeftFill",
+                name: "Print page",
+                value: "transform",
+            },
+            {
+                vector: "RiAlignItemLeftFill",
+                name: "document settings",
+                value: "transform",
+            },
+        ]
+    },
+]
+
 export const ScaleControls = [
   {
     name: "tl",
     x: -0.5,
     y: -0.5,
-    cursorStyle: 'crosshair',
+    cursorStyle: 'nwse-resize',
     // @ts-ignore
     actionHandler: fabric.controlsUtils.scalingEqually,
   },
@@ -186,7 +230,7 @@ export const ScaleControls = [
     name: "mt",
     x: 0,
     y: -0.5,
-    cursorStyle: 'crosshair',
+    cursorStyle: 'ns-resize',
     // @ts-ignore
     actionHandler: fabric.controlsUtils.scalingYOrSkewingX,
   },
@@ -194,7 +238,7 @@ export const ScaleControls = [
     name: "tr",
     x: 0.5,
     y: -0.5,
-    cursorStyle: 'crosshair',
+    cursorStyle: 'nesw-resize',
     // @ts-ignore
     actionHandler: fabric.controlsUtils.scalingEqually,
   },
@@ -202,7 +246,7 @@ export const ScaleControls = [
     name: "mr",
     x: 0.5,
     y: 0,
-    cursorStyle: 'crosshair',
+    cursorStyle: 'ew-resize',
     // @ts-ignore
     actionHandler: fabric.controlsUtils.scalingXOrSkewingY,
   },
@@ -210,7 +254,7 @@ export const ScaleControls = [
     name: "ml",
     x: -0.5,
     y: 0,
-    cursorStyle: 'crosshair',
+    cursorStyle: 'ew-resize',
     // @ts-ignore
     actionHandler: fabric.controlsUtils.scalingXOrSkewingY,
   },
@@ -218,7 +262,7 @@ export const ScaleControls = [
     name: "bl",
     x: -0.5,
     y: 0.5,
-    cursorStyle: 'crosshair',
+    cursorStyle: 'nesw-resize',
     // @ts-ignore
     actionHandler: fabric.controlsUtils.scalingEqually,
   },
@@ -226,7 +270,7 @@ export const ScaleControls = [
     name: "mb",
     x: 0,
     y: 0.5,
-    cursorStyle: 'crosshair',
+    cursorStyle: 'ns-resize',
     // @ts-ignore
     actionHandler: fabric.controlsUtils.scalingYOrSkewingX,
   },
@@ -234,7 +278,7 @@ export const ScaleControls = [
     name: "br",
     x: 0.5,
     y: 0.5,
-    cursorStyle: 'crosshair',
+    cursorStyle: 'nwse-resize',
     // @ts-ignore
     actionHandler: fabric.controlsUtils.scalingEqually,
   },

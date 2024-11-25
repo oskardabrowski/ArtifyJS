@@ -6,7 +6,7 @@ export interface DrawingInterface {
     drawingAreaRef: RefObject<HTMLCanvasElement>
 }
 
-export interface LeftBarInterface {
+export interface ToolNameInterface {
     setToolName: Dispatch<SetStateAction<string | null>>
 }
 export interface IconsInterface {

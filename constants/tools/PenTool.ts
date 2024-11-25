@@ -19,13 +19,17 @@ export class PenTool extends Tool {
         super(editor, '')
     }
 
+    /*
+     *
+     * Override startDrawingOnMouseDown to create pen tool
+     *
+     */
     startDrawingOnMouseDown(e: any): void {
         if(this.isActive) {
             this.isDrawing = true;
             const mouse = this.editor?.getPointer(e.e);
             this.x = mouse!.x;
             this.y = mouse!.y;
-
             this.isMouseDown = true;
 
             this.currentMousePoint = new fabric.Rect({
@@ -50,33 +54,24 @@ export class PenTool extends Tool {
             this.bezierLinePoints = [...this.bezierLinePoints, point];
 
             if(this.currentMousePoint != null) {
-                console.info('Added');
-                console.info(this.currentMousePoint);
-
-                console.info(this.editor!.getZoom());
                 this.mainGroup.addWithUpdate(this.currentMousePoint);
-                // this.editor?.add(this.currentMousePoint);
                 this.editor?.renderAll();
-
-                console.info(this.editor!.getObjects().indexOf(this.currentMousePoint));
-
-                console.log(this.bezierLinePoints);
 
                 if(this.bezierLinePoints.length > 1) {
                     this.createBezierLine();
                 }
-
-                // this.editor?.setActiveObject(shape);
-                // this.stop();
             }
         }
     }
 
+    /*
+     *
+     * Method to create path, not completed yet
+     *
+     */
     createBezierLine() {
         let lowestX: number | null = null;
         let lowestY: number | null = null;
-
-        console.log('Line started!');
 
         let linePoints: { x: number; y: number; }[] | [] = [];
 
@@ -95,51 +90,12 @@ export class PenTool extends Tool {
         if(this.bezierLineShape != null) this.mainGroup.remove(this.bezierLineShape);
 
         if(lowestX != null && lowestY != null) {
-            console.log('Line created!');
-            console.log(linePoints);
-            // this.bezierLineShape = new fabric.Line([...linePoints], {
-            //     left: lowestX,
-            //     top: lowestY,
-            //     stroke: 'red'
-            // });
-
             const firstPoint = linePoints[0];
-
-            // let zeroPoint = {
-            //     x: linePoints[0].x,
-            //     y: linePoints[0].y,
-            // };
-            // let zeroPoint = {
-            //     x: 0,
-            //     y: 0,
-            // };
-
-            const mainGroupCoords = this.mainGroup.getCoords();
-
-            console.log(mainGroupCoords)
 
             let zeroPoint = {
                 x: linePoints[0].x,
                 y: linePoints[0].y,
             };
-
-            const topLeftPoint = {
-                x: mainGroupCoords[0].x,
-                y: mainGroupCoords[0].y,
-            };
-
-            const bottomRightPoint = {
-                x: mainGroupCoords[2].x,
-                y: mainGroupCoords[2].y,
-            };
-
-            const leftMargin = topLeftPoint.x - bottomRightPoint.x;
-            const topMargin = topLeftPoint.y - bottomRightPoint.y;
-
-            console.log(leftMargin);
-            console.log(topMargin);
-
-
 
             linePoints.map((point) => {
                 if (zeroPoint.x < point.x) zeroPoint.x = point.x;
@@ -151,12 +107,8 @@ export class PenTool extends Tool {
                 y: firstPoint.y - zeroPoint.y
             }
 
-            console.log(mPoint)
-
             let LineString = `M ${mPoint.x},${mPoint.y} L `;
             // let LineString = `M 0,0 L `;
-
-            console.log(linePoints);
 
             linePoints.filter((point, index) => {
                 if(index > 0) {
@@ -166,28 +118,12 @@ export class PenTool extends Tool {
 
             // "M 50,150 C 150,50 300,250 350,100 "
 
-            console.log(LineString)
-            console.log(zeroPoint)
-
             this.bezierLineShape = new fabric.Path(LineString, {
               strokeWidth: 6,
-              stroke: "blue",
-            //   left: 0,
-            //   top: 0,
-            //   pathOffset: {x: 0, y: 0},
-            //   left: zeroPoint.x - 2.5,
-            //   top: zeroPoint.y - 2.5,
-            //   left: zeroPoint.x - 2.5,
-            //   top: zeroPoint.y - 2.5,
-              fill: 'red',
+              stroke: '#2563EB',
+              fill: 'transparent',
               padding: 0,
             });
-
-            console.log(this.bezierLineShape);
-
-            // this.bezierLineShape.pathOffset = {x: 0, y: 0};
-            // this.bezierLineShape.top = this.bezierLineShape.pathOffset.x * -1;
-            // this.bezierLineShape.top = {x: 0, y: 0};
 
             this.bezierLineShape.set({
               left: this.bezierLineShape.left! - this.bezierLineShape.pathOffset.x - 1.25,
@@ -196,42 +132,19 @@ export class PenTool extends Tool {
 
             this.mainGroup.insertAt(this.bezierLineShape, 0, false);
             this.editor?.renderAll();
-
-            console.log(this.mainGroup)
         }
-
-
-        // var line = new fabric.Line([50, 10, 200, 150], {
-        //     stroke: 'green'
-        // });
-
-        // canvas.add(new fabric.Line([50, 100, 200, 200], {
-        //     left: 170,
-        //     top: 150,
-        //     stroke: 'red'
-        // }));
-
-
     }
 
-    // continueDrawingOnMouseMove(e: any) {
-    //     if(this.isActive) {
-    //         if(!this.isDrawing) {
-    //             return false;
-    //         }
-
-    //     }
-    // }
-
+    /*
+     *
+     * Initialize tool
+     *
+     */
     init() {
         const startDrawing = this.startDrawingOnMouseDown.bind(this);
-        // const continueDrawing = this.continueDrawingOnMouseMove.bind(this);
-        // const stopDrawing = this.stopDrawingOnMouseUp.bind(this);
         const holdingShift = this.shiftDownHandler.bind(this);
         const upShift = this.shiftUpHandler.bind(this);
         this.editor?.on("mouse:down", (e) => startDrawing(e));
-        // this.editor?.on("mouse:move", (e) => continueDrawing(e));
-        // this.editor?.on("mouse:up", () => stopDrawing());
         window.addEventListener('keydown', (e) => holdingShift(e));
         window.addEventListener('keyup', (e) => upShift(e));
     }
@@ -240,13 +153,10 @@ export class PenTool extends Tool {
         if(this.isActive) {
             this.stop()
         } else {
-
             this.editor?.add(this.mainGroup);
-            // this.mainGroup.add(this.controlsGroup);
-            // this.mainGroup.add(this.pathGroup);
-
             this.editor!.selection = false;
             this.isActive = true;
+            this.blockObjectsWhileDrawing();
         }
     }
 
@@ -254,5 +164,6 @@ export class PenTool extends Tool {
         this.editor!.selection = true;
         this.isActive = false;
         this.isHoldingShift = false;
+        this.unblockObjectsAfterDrawing();
     }
 }
