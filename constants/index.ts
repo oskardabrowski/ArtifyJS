@@ -81,11 +81,32 @@ export const Tools = [
         name: "Crop",
         value: "crop"
     },
+];
+
+export const TopBarTools = [
     {
-        vector: "TbArrowsMoveVertical",
-        name: "Move tool",
-        value: "movetool",
-        submenu: [
+        type: 'part',
+        tools: [
+            {
+                vector: "RiSave3Fill",
+                name: "Save project",
+                value: "save_project",
+            },
+            {
+                vector: "LuPrinter",
+                name: "Print page",
+                value: "print_page",
+            },
+            {
+                vector: "GrDocumentConfig",
+                name: "Document settings",
+                value: "document_settings",
+            },
+        ]
+    },
+    {
+        type: 'part',
+        tools: [
             {
                 vector: "MdOutlineVerticalAlignTop",
                 name: "Move to Front",
@@ -109,10 +130,8 @@ export const Tools = [
         ]
     },
     {
-        vector: "TbTransform",
-        name: "Transform tools",
-        value: "transform",
-        submenu: [
+        type: 'part',
+        tools: [
             {
                 vector: "PiFlipHorizontal",
                 name: "Flip horizontal",
@@ -136,10 +155,18 @@ export const Tools = [
         ]
     },
     {
-        vector: "LuCombine",
-        name: "Combine tools",
-        value: "transform",
-        submenu: [
+        type: 'part',
+        tools: [
+            {
+                vector: "RiAlignItemLeftFill",
+                name: "Alignment tools",
+                value: "transform",
+            },
+        ]
+    },
+    {
+        type: 'part',
+        tools: [
             {
                 vector: "TbLayersUnion",
                 name: "Add",
@@ -166,55 +193,8 @@ export const Tools = [
                 value: "divide_shapes",
             },
         ]
-    },
-    {
-        vector: "RiAlignItemLeftFill",
-        name: "Alignment tools",
-        value: "transform",
     }
-];
 
-export const TopBarTools = [
-    {
-        type: 'part',
-        tools: [
-            {
-                vector: "RiAlignItemLeftFill",
-                name: "Save project",
-                value: "transform",
-            },
-            {
-                vector: "RiAlignItemLeftFill",
-                name: "Print page",
-                value: "transform",
-            },
-            {
-                vector: "RiAlignItemLeftFill",
-                name: "document settings",
-                value: "transform",
-            },
-        ]
-    },
-    {
-        type: 'part',
-        tools: [
-            {
-                vector: "RiAlignItemLeftFill",
-                name: "Save project",
-                value: "transform",
-            },
-            {
-                vector: "RiAlignItemLeftFill",
-                name: "Print page",
-                value: "transform",
-            },
-            {
-                vector: "RiAlignItemLeftFill",
-                name: "document settings",
-                value: "transform",
-            },
-        ]
-    },
 ]
 
 export const ScaleControls = [

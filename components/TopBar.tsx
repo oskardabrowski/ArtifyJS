@@ -1,7 +1,7 @@
 "use client";
 
 import Bar from "./ui/Bar";
-import { TopBar as TopBarStyle } from "./ui/UiStyles";
+import { ToolSubmenu, TopBarPart, TopBar as TopBarStyle } from "./ui/UiStyles";
 import Image from "next/image";
 import { TopBarTools } from "../constants";
 import { ToolMouseEnterInterface } from "../constants/interfaces";
@@ -9,6 +9,8 @@ import { useState } from "react";
 import { ToolType } from "../constants/enums";
 import { ToolNameInterface } from "../constants/interfaces";
 import { MovableBarStyleFlex } from "./ui/UiStyles";
+import Icons from "./ui/Icons";
+import Tool from "./ui/Tool";
 
 const TopBar = ({setToolName}: ToolNameInterface) => {
     const [submenuHoverState, setSubmenuHoverState] = useState("");
@@ -32,7 +34,21 @@ const TopBar = ({setToolName}: ToolNameInterface) => {
                 <Image style={{ borderRight: '1.5px solid rgba(30, 64, 175, 0.4)', borderRadius: '0px 5px 5px 0px' }} src="/ArtifyJsIcon.png" alt="Logo" width={49} height={49}/>
                 {
                     TopBarTools.map((el, index) => {
-                        return el.type;
+                        const {type, tools} = el;
+                        if(type === 'part') {
+                          return <TopBarPart key={index}>
+                            {tools.map((tool, index) => {
+                              const {submenu, vector, name, value} = tool;
+                              const toolType = submenu != undefined ? ToolType.none : ToolType.yes;
+                              return <Tool clickHandler={clickHandler} valueProp={value} toolType={toolType} key={index} submenu={submenu} name={name} mouseEnterHandler={mouseEnterHandler} mouseLeaveHandler={mouseLeaveHandler}>
+                                <Icons iconName={vector} />
+                                {/* {name} */}
+                              </Tool>;
+                            })}
+                          <div></div>
+                          </TopBarPart>
+                        }
+                        // return el.type;
                     })
                 }
             </MovableBarStyleFlex>

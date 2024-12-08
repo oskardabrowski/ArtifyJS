@@ -89,15 +89,9 @@ export const ToolSubmenu = styled.div`
     background-color: #141414;
     border: 2px solid black;
     border-radius: 5px;
-    /* box-shadow: 3px 3px 0px rgba(0,0,0, 1); */
     width: max-content;
     transition: all .25s ease-in-out;
     color: white;
-
-    /* background: rgba(0, 0, 0, 0.2);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px); */
     border: 1.25px solid rgba(30, 64, 175, 0.4);
 
     & > button {
@@ -125,5 +119,21 @@ export const TopBar = styled.div`
 export const BottomBars = styled.div`
     & > div {
         height: calc(100dvh - 75px);
+    }
+`;
+
+export const TopBarPart = styled.div`
+    height: 100%;
+    display: flex;
+    padding: 0rem .25rem 0rem .25rem;
+
+    &:nth-child(2) {
+        padding-left: .75rem;
+    }
+
+    & > div {
+        height: 36px;
+        margin-top: 6px;
+        border-right: 1.25px solid rgba(30, 64, 175, 1);
     }
 `;

@@ -12,6 +12,9 @@ import { BiRectangle } from "react-icons/bi";
 import { RiTextBlock, RiText, RiAlignItemLeftFill } from "react-icons/ri";
 import { PiFlipHorizontal, PiFlipVertical } from "react-icons/pi";
 import { CgPathDivide } from "react-icons/cg";
+import { RiSave3Fill } from "react-icons/ri";
+import { LuPrinter } from "react-icons/lu";
+import { GrDocumentConfig } from "react-icons/gr";
 
 const Icons = ({iconName}: IconsInterface) => {
   return (
@@ -50,6 +53,9 @@ const Icons = ({iconName}: IconsInterface) => {
           'TbLayersIntersect': <TbLayersIntersect />,
           'TbLayersIntersect2': <TbLayersIntersect2 />,
           'CgPathDivide': <CgPathDivide />,
+          'RiSave3Fill': <RiSave3Fill />,
+          'LuPrinter': <LuPrinter />,
+          'GrDocumentConfig': <GrDocumentConfig />,
         }[iconName]
       }
     </>
