@@ -8,7 +8,7 @@ Ff you want full build of the application run `npm run build` then install on yo
 ```bash
 git clone https://github.com/oskardabrowski/OpenVectorDraw.git
 
-cd OpenVectorDraw
+cd ArtifyJS
 
 npm install
 

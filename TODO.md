@@ -1,7 +1,8 @@
 >>> Version 1.0.0
 > UI Design
 - [ ] Loading screen design
-- [ ] Left bar design
+- [ ] Top bar design
+- [x] Left bar design
 - [ ] Right bar design
 - [ ] Drawing area design
 - [ ] A4 page at the center of editor

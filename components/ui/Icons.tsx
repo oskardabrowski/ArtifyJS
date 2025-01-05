@@ -1,6 +1,6 @@
 "use client";
 import { IconsInterface } from "../../constants/interfaces";
-import { BsVectorPen, BsPen } from "react-icons/bs";
+import { BsVectorPen } from "react-icons/bs";
 import { IoShapesOutline, IoHandRightOutline, IoTextOutline, IoCropSharp, IoAddCircle } from "react-icons/io5";
 import { MdOutlineGradient, MdOutlineVerticalAlignTop, MdOutlineVerticalAlignBottom } from "react-icons/md";
 import { TiImage } from "react-icons/ti";
@@ -15,6 +15,7 @@ import { CgPathDivide } from "react-icons/cg";
 import { RiSave3Fill } from "react-icons/ri";
 import { LuPrinter } from "react-icons/lu";
 import { GrDocumentConfig } from "react-icons/gr";
+import { Icon } from "@iconify/react";
 
 const Icons = ({iconName}: IconsInterface) => {
   return (
@@ -23,8 +24,8 @@ const Icons = ({iconName}: IconsInterface) => {
         {
           'BsVectorPen': <BsVectorPen />,
           'IoShapesOutline': <IoShapesOutline />,
-          'BsPen': <BsPen />,
-          'PiNavigationArrow': <PiNavigationArrow />,
+          'BsPen': <Icon icon="bi:pen" />,
+          'PiNavigationArrow': <Icon icon="streamline:arrow-cursor-2" />,
           'MdOutlineGradient': <MdOutlineGradient />,
           'TiImage': <TiImage />,
           'IoHandRightOutline': <IoHandRightOutline />,
@@ -40,18 +41,18 @@ const Icons = ({iconName}: IconsInterface) => {
           'LuTriangle': <LuTriangle />,
           'RiText': <RiText />,
           'RiTextBlock': <RiTextBlock />,
-          'MdOutlineVerticalAlignTop': <MdOutlineVerticalAlignTop />,
-          'MdOutlineVerticalAlignBottom': <MdOutlineVerticalAlignBottom />,
-          'LuMoveUp': <LuMoveUp />,
-          'LuMoveDown': <LuMoveDown />,
+          'MdOutlineVerticalAlignTop': <Icon icon="fluent:position-to-front-24-filled" />,
+          'MdOutlineVerticalAlignBottom': <Icon icon="fluent:position-to-back-20-filled" />,
+          'LuMoveUp': <Icon icon="fluent:position-forward-20-filled" />,
+          'LuMoveDown': <Icon icon="fluent:position-backward-20-filled" />,
           'PiFlipHorizontal': <PiFlipHorizontal />,
           'PiFlipVertical': <PiFlipVertical />,
           'LuRotateCw': <LuRotateCw />,
           'LuRotateCcw': <LuRotateCcw />,
-          'TbLayersUnion': <TbLayersUnion />,
-          'TbLayersSubtract': <TbLayersSubtract />,
-          'TbLayersIntersect': <TbLayersIntersect />,
-          'TbLayersIntersect2': <TbLayersIntersect2 />,
+          'TbLayersUnion': <Icon icon="fluent:shape-union-16-regular" />,
+          'TbLayersSubtract': <Icon icon="fluent:shape-subtract-20-regular" />,
+          'TbLayersIntersect': <Icon icon="fluent:shape-intersect-16-regular" />,
+          'TbLayersIntersect2': <Icon icon="fluent:shape-exclude-16-regular" />,
           'CgPathDivide': <CgPathDivide />,
           'RiSave3Fill': <RiSave3Fill />,
           'LuPrinter': <LuPrinter />,
