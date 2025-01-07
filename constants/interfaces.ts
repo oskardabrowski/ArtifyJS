@@ -35,5 +35,7 @@ export interface ToolPropsInterface {
 
 export interface BezierLinePoint {
     x: number,
-    y: number
+    y: number,
+    type: string,
+    modifier: boolean
 }

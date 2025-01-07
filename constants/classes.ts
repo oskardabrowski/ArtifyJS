@@ -167,7 +167,8 @@ export class VectorEditor {
 
         this.fabricCanvas?.add(ellip);
 
-        const path = new fabric.Path("M 0,0 C 50,50 100,100 150,150 ", {
+        // M 50,150 C 150,50 300,250 350,100
+        const path = new fabric.Path("M 150,0 C 100,50 100,100 150,150 C 200,200 200,250 150,300", {
           strokeWidth: 6,
           stroke: "red",
           fill: '',

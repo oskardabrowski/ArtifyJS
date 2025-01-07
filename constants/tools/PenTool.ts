@@ -9,6 +9,8 @@ export class PenTool extends Tool {
     bezierLinePoints: BezierLinePoint[] | [] = [];
     bezierLineShape: fabric.Path | null = null;
     isMouseDown: boolean = false;
+    isModifierPoint: boolean = false;
+    isCurveStarted: boolean = false;
     mainGroup = new fabric.Group([], {
         left: 0,
         top: 0,
@@ -47,6 +49,8 @@ export class PenTool extends Tool {
             const point: BezierLinePoint = {
                 x: this.x,
                 y: this.y,
+                type: 'L',
+                modifier: false
             }
 
             this.allMousePoints = [...this.allMousePoints, this.currentMousePoint]
@@ -73,17 +77,25 @@ export class PenTool extends Tool {
         let lowestX: number | null = null;
         let lowestY: number | null = null;
 
-        let linePoints: { x: number; y: number; }[] | [] = [];
+        let linePoints: BezierLinePoint[] | [] = [];
 
         this.bezierLinePoints.forEach((point) => {
-            const {x, y}: BezierLinePoint = point;
-            linePoints = [...linePoints, {x: x ,y: y}]
+            const {x, y, type}: BezierLinePoint = point;
+            linePoints = [...linePoints, point];
 
             if(lowestX === null || lowestX > x) {
-                lowestX = x;
+                if(type != 'C') {
+                    lowestX = x;
+                } else {
+                    lowestX = 0;
+                }
             }
             if(lowestY === null || lowestY > y) {
-                lowestY = y;
+                if(type != 'C') {
+                    lowestY = y;
+                } else {
+                    lowestY = 0;
+                }
             }
         });
 
@@ -102,18 +114,41 @@ export class PenTool extends Tool {
                 if (zeroPoint.y < point.y) zeroPoint.y = point.y;
             });
 
-            const mPoint = {
+            let mPoint = {
                 x: firstPoint.x - zeroPoint.x,
                 y: firstPoint.y - zeroPoint.y
             }
 
-            let LineString = `M ${mPoint.x},${mPoint.y} L `;
+            if(firstPoint.type === 'C') {
+                mPoint = {
+                    x: 0,
+                    y: 0
+                }
+            }
+
+            let LineString = `M ${mPoint.x},${mPoint.y}`;
             // let LineString = `M 0,0 L `;
 
+            let lastLetter = 'M';
+
             linePoints.filter((point, index) => {
+
+
+                // const {x, y} = point;
+
+                // console.log(point);
+
+                const {x, y, type} = point;
+
                 if(index > 0) {
-                    LineString += `${point.x - zeroPoint.x},${point.y - zeroPoint.y} `;
+                    if(lastLetter != type) {
+                        LineString += ` ${type}`;
+                        lastLetter = type;
+                    }
+                    LineString += `${x - zeroPoint.x},${y - zeroPoint.y} `;
                 }
+
+                console.log(LineString);
             });
 
             // "M 50,150 C 150,50 300,250 350,100 "
@@ -137,6 +172,71 @@ export class PenTool extends Tool {
 
     /*
      *
+     * Method to stop modyfying curve
+     *
+     */
+    stopModyfyingCurve() {
+        if(this.isActive) {
+            this.isMouseDown = false;
+            this.isModifierPoint = false;
+        }
+    }
+
+    /*
+     *
+     *
+     *
+     */
+    createOrModifyCurve(e: { e: Event; }) {
+        if(this.isActive && this.isMouseDown) {
+            const mouse = this.editor?.getPointer(e.e);
+            this.x = mouse!.x;
+            this.y = mouse!.y;
+
+            // this.currentMousePoint = new fabric.Rect({
+            //     width: 10,
+            //     height: 10,
+            //     left: this.x - 5,
+            //     top: this.y - 5,
+            //     fill: '#FFFFFF',
+            //     stroke:'#0062BC',
+            //     strokeWidth: 1,
+            //     padding: 0,
+            //     selectable: false,
+            // });
+
+
+
+            // this.allMousePoints = [...this.allMousePoints, this.currentMousePoint]
+
+            if(!this.isCurveStarted) {
+                const point = this.bezierLinePoints.pop();
+                point!.x = this.x;
+                point!.y = this.y;
+                point!.type = 'C';
+                // @ts-ignore
+                this.bezierLinePoints = [...this.bezierLinePoints, point];
+            }
+            // else {
+
+            // }
+
+
+
+
+            if(this.currentMousePoint != null) {
+                this.mainGroup.addWithUpdate(this.currentMousePoint);
+                this.editor?.renderAll();
+
+                if(this.bezierLinePoints.length > 1) {
+                    this.createBezierLine();
+                }
+            }
+        }
+    }
+
+    /*
+     *
      * Initialize tool
      *
      */
@@ -144,7 +244,11 @@ export class PenTool extends Tool {
         const startDrawing = this.startDrawingOnMouseDown.bind(this);
         const holdingShift = this.shiftDownHandler.bind(this);
         const upShift = this.shiftUpHandler.bind(this);
+        const stopModyfying = this.stopModyfyingCurve.bind(this);
+        const createOrModifyCurve = this.createOrModifyCurve.bind(this);
         this.editor?.on("mouse:down", (e) => startDrawing(e));
+        this.editor?.on("mouse:up", () => stopModyfying());
+        this.editor?.on("mouse:move", (e) => createOrModifyCurve(e));
         window.addEventListener('keydown', (e) => holdingShift(e));
         window.addEventListener('keyup', (e) => upShift(e));
     }
