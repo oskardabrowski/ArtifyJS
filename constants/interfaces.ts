@@ -39,3 +39,11 @@ export interface BezierLinePoint {
     type: string,
     modifier: boolean
 }
+
+export interface BezierTrackingCoordInterface {
+    x: number,
+    y: number,
+    type: string,
+    number: number,
+    modifier: boolean,
+}

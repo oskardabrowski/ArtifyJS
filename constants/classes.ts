@@ -177,6 +177,17 @@ export class VectorEditor {
         });
 
         this.fabricCanvas?.add(path);
+
+        // M 816,311 C 816,311 759,371 L 876,470 C 759,371
+        // const path2 = new fabric.Path("M 816,311 C 816,311 759,371 876,470", {
+        //   strokeWidth: 6,
+        //   stroke: "red",
+        //   fill: '',
+        //   // left: 500,
+        //   // top: 100,
+        // });
+
+        // this.fabricCanvas?.add(path2);
     }
 
     init() {
