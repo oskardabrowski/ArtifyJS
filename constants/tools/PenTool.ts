@@ -22,6 +22,8 @@ export class PenTool extends Tool {
     currentLetter: string = 'M';
     CurrentType: string = 'M';
     modifierPoint: BezierLinePoint | null = null;
+    modifierPointOposite: BezierLinePoint | null = null;
+    LineStringObject: { pointList: { x: number; y: number; }[]; type: string }[] = [];
 
     constructor(editor: Canvas | null) {
         super(editor, '')
@@ -54,14 +56,27 @@ export class PenTool extends Tool {
             //     selectable: false,
             // });
 
+            if(this.LineStringObject.length > 1) {
+                const {pointList, type} = this.LineStringObject[this.LineStringObject.length - 1];
+                if(type === 'C' && pointList.length < 3) {
+                     this.trackingCoords = {
+                        x: this.x,
+                        y: this.y,
+                        type: 'C',
+                        modifier: true,
+                    }
+                }
+
+            }
+
+
             let type = 'L';
 
             console.log(this.trackingCoords);
             if(this.trackingCoords != null) {
                 type = 'C';
-                this.trackingCoords = null;
-                this.currentLetter = 'L';
 
+                this.currentLetter = 'L';
                 this.modifierPoint = {
                     x: this.x,
                     y: this.y,
@@ -82,6 +97,18 @@ export class PenTool extends Tool {
             }
 
             this.bezierLinePoints = [...this.bezierLinePoints, point];
+
+            if(this.trackingCoords != null) {
+                this.trackingCoords = null;
+                this.modifierPointOposite = {
+                    x: this.x,
+                    y: this.y,
+                    type: 'C',
+                    modifier: true
+                }
+
+                this.bezierLinePoints = [...this.bezierLinePoints, this.modifierPointOposite];
+            }
 
             console.log(this.bezierLinePoints);
 
@@ -109,7 +136,7 @@ export class PenTool extends Tool {
 
         if(this.bezierLinePoints.length > 1) {
 
-            let LineStringObject: { pointList: { x: number; y: number; }[]; type: string }[] = [];
+            this.LineStringObject = [];
 
             let CCounter = 0;
 
@@ -121,48 +148,53 @@ export class PenTool extends Tool {
                 console.log(CCounter);
 
                 if(index === 0) {
-                    LineStringObject.push({
+                    this.LineStringObject.push({
                         pointList: [{x,y}],
                         type: 'M'
                     });
                 } else if (type === 'C' && this.CurrentType != 'C') {
                     this.CurrentType = 'C';
                     CCounter++;
-                    LineStringObject.push({
+                    this.LineStringObject.push({
                         pointList: [{x,y}],
                         type: 'C'
                     });
                 } else if (this.CurrentType === 'C' && CCounter < 3) {
                     CCounter++;
-                    LineStringObject[LineStringObject.length - 1].pointList.push({x,y});
+                    this.LineStringObject[this.LineStringObject.length - 1].pointList.push({x,y});
                 } else if (this.CurrentType === 'C' && CCounter === 3) {
                     CCounter = 1;
-                    LineStringObject.push({
+                    this.LineStringObject.push({
                         pointList: [{x,y}],
                         type: 'C'
                     });
                 } else if (type === 'L' && this.CurrentType != 'L') {
                     this.CurrentType = 'L';
                     CCounter = 0;
-                    LineStringObject.push({
+                    this.LineStringObject.push({
                         pointList: [{x,y}],
                         type: 'L'
                     });
                 } else {
-                    LineStringObject[LineStringObject.length - 1].pointList.push({x,y});
+                    this.LineStringObject[this.LineStringObject.length - 1].pointList.push({x,y});
                 }
 
             });
 
-            console.log(LineStringObject);
+            console.log(this.LineStringObject);
 
-            LineStringObject.forEach((line) => {
+            this.LineStringObject.forEach((line) => {
                 const {pointList, type} = line;
-                LineString += `${type} `;
 
+                console.log(type)
+                console.log(pointList.length)
+
+                console.log(type === 'C' && pointList.length === 3);
+
+                if(type != 'C' || type === 'C' && pointList.length === 3) LineString += `${type} `;
                 pointList.forEach((point) => {
                     const {x,y} = point;
-                    LineString += `${x},${y} `;
+                    if(type != 'C' || type === 'C' && pointList.length === 3) LineString += `${x},${y} `;
                 });
             });
 
@@ -188,7 +220,7 @@ export class PenTool extends Tool {
 
     /*
      *
-     *
+     * Function created to track mouse position and create position based points
      *
      */
     trackingPoint(e: { e: Event; }) {
@@ -225,12 +257,75 @@ export class PenTool extends Tool {
                     modifier: true,
                 }
             } else {
-                this.bezierLinePoints[this.bezierLinePoints.length - 2] = {
+                console.log(this.bezierLinePoints);
+                const {x,y} = this.bezierLinePoints[this.bezierLinePoints.length - 2];
+                this.bezierLinePoints[this.bezierLinePoints.length - 3] = {
                     x: this.x,
                     y: this.y,
                     type: 'C',
                     modifier: true,
                 }
+
+                const difference_x = x - this.x;
+                const difference_y = y - this.y;
+
+                const difference = [(difference_x > 0),(difference_y > 0)];
+
+                console.log(JSON.stringify(difference));
+
+                console.log([this.x,this.y]);
+                console.log(difference_x);
+                console.log(difference_y);
+
+                let new_x = 0;
+                let new_y = 0;
+
+                if(JSON.stringify(difference) === '[true,true]') {
+                    new_x = x + difference_x;
+                    new_y = y + difference_y;
+                }
+                else if(JSON.stringify(difference) === '[false,true]') {
+                    new_x = x - difference_x;
+                    new_y = y + difference_y;
+                }
+                else if(JSON.stringify(difference) === '[true,false]') {
+                    new_x = x + difference_x;
+                    new_y = y - difference_y;
+                }
+                else if(JSON.stringify(difference) === '[false,false]') {
+                    new_x = x - difference_x;
+                    new_y = y - difference_y;
+                }
+
+                console.log([x,y]);
+                console.log([new_x,new_y]);
+
+                if(JSON.stringify([this.x,this.y]) === JSON.stringify([new_x,new_y])) {
+                    if(JSON.stringify(difference) === '[true,true]') {
+                        new_x = x - difference_x;
+                        new_y = y - difference_y;
+                    }
+                    else if(JSON.stringify(difference) === '[false,true]') {
+                        new_x = x + difference_x;
+                        new_y = y - difference_y;
+                    }
+                    else if(JSON.stringify(difference) === '[true,false]') {
+                        new_x = x - difference_x;
+                        new_y = y + difference_y;
+                    }
+                    else if(JSON.stringify(difference) === '[false,false]') {
+                        new_x = x + difference_x;
+                        new_y = y + difference_y;
+                    }
+                }
+
+                this.bezierLinePoints[this.bezierLinePoints.length - 1] = {
+                    x: new_x,
+                    y: new_y,
+                    type: 'C',
+                    modifier: true,
+                }
+
             }
 
             console.log(this.modifierPoint);
@@ -299,5 +394,21 @@ export class PenTool extends Tool {
         this.isActive = false;
         this.isHoldingShift = false;
         this.unblockObjectsAfterDrawing();
+        this.currentMousePoint = null;
+        this.bezierLinePoints = [];
+        this.bezierLineShape = new fabric.Path('', {
+          strokeWidth: 6,
+          stroke: '#2563EB',
+          fill: 'transparent',
+          padding: 0,
+        });
+        this.trackingCoords = null;
+        this.isMouseDown = false;
+        this.isModifierPoint = false;
+        this.currentLetter = 'M';
+        this.CurrentType = 'M';
+        this.modifierPoint = null;
+        this.modifierPointOposite = null;
+        this.LineStringObject = [];
     }
 }
