@@ -4,7 +4,7 @@
 - [ ] Top bar design
 - [x] Left bar design
 - [ ] Right bar design
-- [ ] Drawing area design
+- [x] Drawing area design
 - [ ] A4 page at the center of editor
 
 > Tools
