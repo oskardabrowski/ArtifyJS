@@ -1,7 +1,7 @@
 import { Tool } from "./tool";
 import { Canvas } from "fabric/fabric-impl";
 import { fabric } from 'fabric';
-import { BezierLinePoint, BezierTrackingCoordInterface } from "../interfaces";
+import { BezierLinePoint } from "../interfaces";
 
 // --> Strategy --> MCCCL
 
@@ -9,7 +9,6 @@ import { BezierLinePoint, BezierTrackingCoordInterface } from "../interfaces";
 
 export class PenTool extends Tool {
     currentMousePoint: fabric.Circle | fabric.Rect | null = null;
-    allMousePoints: any[] | [] = [];
     bezierLinePoints: BezierLinePoint[] | [] = [];
     bezierLineShape: fabric.Path = new fabric.Path('', {
       strokeWidth: 6,
@@ -20,17 +19,8 @@ export class PenTool extends Tool {
     trackingCoords: BezierLinePoint | null = null;
     isMouseDown: boolean = false;
     isModifierPoint: boolean = false;
-    isCurveStarted: boolean = false;
-    mainGroup = new fabric.Group([], {
-        left: 0,
-        top: 0,
-    });
     currentLetter: string = 'M';
-    bezierCounter: number = 0;
     CurrentType: string = 'M';
-    controlsGroup = new fabric.Group([], {});
-    pathGroup = new fabric.Group([], {});
-
     modifierPoint: BezierLinePoint | null = null;
 
     constructor(editor: Canvas | null) {
