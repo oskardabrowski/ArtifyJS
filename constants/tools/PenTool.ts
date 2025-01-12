@@ -3,6 +3,10 @@ import { Canvas } from "fabric/fabric-impl";
 import { fabric } from 'fabric';
 import { BezierLinePoint, BezierTrackingCoordInterface } from "../interfaces";
 
+// --> Strategy --> MCCCL
+
+// --> reverse second modifier point to make new curve started
+
 export class PenTool extends Tool {
     currentMousePoint: fabric.Circle | fabric.Rect | null = null;
     allMousePoints: any[] | [] = [];
@@ -13,7 +17,7 @@ export class PenTool extends Tool {
       fill: 'transparent',
       padding: 0,
     });
-    trackingCoords: BezierTrackingCoordInterface | null = null;
+    trackingCoords: BezierLinePoint | null = null;
     isMouseDown: boolean = false;
     isModifierPoint: boolean = false;
     isCurveStarted: boolean = false;
@@ -26,6 +30,9 @@ export class PenTool extends Tool {
     CurrentType: string = 'M';
     controlsGroup = new fabric.Group([], {});
     pathGroup = new fabric.Group([], {});
+
+    modifierPoint: BezierLinePoint | null = null;
+
     constructor(editor: Canvas | null) {
         super(editor, '')
     }
@@ -64,6 +71,15 @@ export class PenTool extends Tool {
                 type = 'C';
                 this.trackingCoords = null;
                 this.currentLetter = 'L';
+
+                this.modifierPoint = {
+                    x: this.x,
+                    y: this.y,
+                    type: type,
+                    modifier: true
+                }
+
+                this.bezierLinePoints = [...this.bezierLinePoints, this.modifierPoint];
             }
 
             console.log(type);
@@ -77,6 +93,8 @@ export class PenTool extends Tool {
 
             this.bezierLinePoints = [...this.bezierLinePoints, point];
 
+            console.log(this.bezierLinePoints);
+
             this.editor?.renderAll();
             console.log(this.bezierLinePoints);
             if(this.bezierLinePoints.length > 1) {
@@ -87,20 +105,10 @@ export class PenTool extends Tool {
 
     /*
      *
-     * Method to create path, not completed yet
+     * Method to create path
      *
      */
     createBezierLine() {
-        // let lowestX: number | null = null;
-        // let lowestY: number | null = null;
-
-        // let linePoints: BezierLinePoint[] | [] = [];
-
-
-
-
-
-
         const firstPoint = this.bezierLinePoints[0];
 
         this.currentLetter = 'M';
@@ -168,35 +176,6 @@ export class PenTool extends Tool {
                 });
             });
 
-
-
-            // console.log(this.bezierLinePoints);
-
-            // this.bezierLinePoints.forEach((point) => {
-            //     console.log(point);
-
-            //     const {x,y,type} = point;
-
-            //     if(this.currentLetter != type) {
-            //         this.currentLetter = type;
-            //         LineString += `${this.currentLetter} `;
-            //     }
-
-            //     console.log(this.bezierCounter);
-
-            //     if(this.bezierCounter === 3) {
-            //         LineString += `C `;
-            //         this.bezierCounter = 0;
-            //     }
-
-            //     if(type === 'C') {
-            //         this.bezierCounter++;
-            //     }
-
-            //     LineString += `${x},${y} `;
-
-            // });
-
             this.editor?.remove(this.bezierLineShape);
 
             console.log(LineString);
@@ -208,103 +187,11 @@ export class PenTool extends Tool {
               padding: 0,
             });
 
-            // this.bezierLineShape.render();
-
             this.editor?.add(this.bezierLineShape);
 
         }
 
         this.editor?.renderAll();
-
-        // this.bezierLinePoints.forEach((point) => {
-        //     const {x, y, type}: BezierLinePoint = point;
-        //     linePoints = [...linePoints, point];
-
-        //     if(lowestX === null || lowestX > x) {
-        //         if(type != 'C') {
-        //             lowestX = x;
-        //         } else {
-        //             lowestX = 0;
-        //         }
-        //     }
-        //     if(lowestY === null || lowestY > y) {
-        //         if(type != 'C') {
-        //             lowestY = y;
-        //         } else {
-        //             lowestY = 0;
-        //         }
-        //     }
-        // });
-
-        // if(this.bezierLineShape != null) this.mainGroup.remove(this.bezierLineShape);
-
-        // if(lowestX != null && lowestY != null) {
-        //     const firstPoint = linePoints[0];
-
-        //     let zeroPoint = {
-        //         x: linePoints[0].x,
-        //         y: linePoints[0].y,
-        //     };
-
-        //     linePoints.map((point) => {
-        //         if (zeroPoint.x < point.x) zeroPoint.x = point.x;
-        //         if (zeroPoint.y < point.y) zeroPoint.y = point.y;
-        //     });
-
-        //     let mPoint = {
-        //         x: firstPoint.x - zeroPoint.x,
-        //         y: firstPoint.y - zeroPoint.y
-        //     }
-
-        //     if(firstPoint.type === 'C') {
-        //         mPoint = {
-        //             x: 0,
-        //             y: 0
-        //         }
-        //     }
-
-            // let LineString = `M ${mPoint.x},${mPoint.y}`;
-            // let LineString = `M 0,0 L `;
-
-            // let lastLetter = 'M';
-
-            // linePoints.filter((point, index) => {
-
-
-            //     // const {x, y} = point;
-
-            //     // console.log(point);
-
-            //     const {x, y, type} = point;
-
-            //     if(index > 0) {
-            //         if(lastLetter != type) {
-            //             LineString += ` ${type}`;
-            //             lastLetter = type;
-            //         }
-            //         LineString += `${x - zeroPoint.x},${y - zeroPoint.y} `;
-            //     }
-
-            //     console.log(LineString);
-            // });
-
-            // "M 50,150 C 150,50 300,250 350,100 "
-
-            // this.bezierLineShape = new fabric.Path(LineString, {
-            //   strokeWidth: 6,
-            //   stroke: '#2563EB',
-            //   fill: 'transparent',
-            //   padding: 0,
-            // });
-
-            // this.bezierLineShape.set({
-            //   left: this.bezierLineShape.left! - this.bezierLineShape.pathOffset.x - 1.25,
-            //   top: this.bezierLineShape.top! - this.bezierLineShape.pathOffset.y - 1.25
-            // });
-
-            // this.mainGroup.insertAt(this.bezierLineShape, 0, false);
-        //     this.editor?.renderAll();
-        // }
     }
 
 
@@ -340,59 +227,29 @@ export class PenTool extends Tool {
                 this.bezierLinePoints = [...this.bezierLinePoints, point];
             }
 
-            let isFirst = false;
-
-            if(this.trackingCoords === null || this.trackingCoords.number === 1) {
-                isFirst = true;
+            if(this.modifierPoint === null) {
+                this.trackingCoords = {
+                    x: this.x,
+                    y: this.y,
+                    type: 'C',
+                    modifier: true,
+                }
+            } else {
+                this.bezierLinePoints[this.bezierLinePoints.length - 2] = {
+                    x: this.x,
+                    y: this.y,
+                    type: 'C',
+                    modifier: true,
+                }
             }
 
-            this.trackingCoords = {
-                x: this.x,
-                y: this.y,
-                type: 'C',
-                number: isFirst ? 1 : 2,
-                modifier: true,
+            console.log(this.modifierPoint);
+
+
+            if(this.bezierLinePoints.length > 1) {
+                this.createBezierLine();
+                this.editor?.renderAll();
             }
-
-            // this.currentMousePoint = new fabric.Rect({
-            //     width: 10,
-            //     height: 10,
-            //     left: this.x - 5,
-            //     top: this.y - 5,
-            //     fill: '#FFFFFF',
-            //     stroke:'#0062BC',
-            //     strokeWidth: 1,
-            //     padding: 0,
-            //     selectable: false,
-            // });
-
-
-
-            // this.allMousePoints = [...this.allMousePoints, this.currentMousePoint]
-
-            // if(!this.isCurveStarted) {
-            //     const point = this.bezierLinePoints.pop();
-            //     point!.x = this.x;
-            //     point!.y = this.y;
-            //     point!.type = 'C';
-            //     // @ts-ignore
-            //     this.bezierLinePoints = [...this.bezierLinePoints, point];
-            // }
-            // else {
-
-            // }
-
-
-
-
-            // if(this.currentMousePoint != null) {
-            //     this.mainGroup.addWithUpdate(this.currentMousePoint);
-            //     this.editor?.renderAll();
-
-            //     if(this.bezierLinePoints.length > 1) {
-            //         this.createBezierLine();
-            //     }
-            // }
         }
     }
 
@@ -406,13 +263,10 @@ export class PenTool extends Tool {
             this.isMouseDown = false;
 
             // @ts-ignore
-            if(this.trackingCoords != null && !this.bezierLinePoints.includes(this.trackingCoords)) this.bezierLinePoints = [...this.bezierLinePoints, this.trackingCoords!];
+            if(this.trackingCoords != null && !this.bezierLinePoints.includes(this.trackingCoords) && this.modifierPoint === null) this.bezierLinePoints = [...this.bezierLinePoints, this.trackingCoords!];
 
             if(this.bezierLinePoints.length > 3) {
                 this.createBezierLine();
-                if (this.trackingCoords) {
-                    this.trackingCoords.number = 2;
-                }
             }
 
 
