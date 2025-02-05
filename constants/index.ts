@@ -91,6 +91,7 @@ export const TopBarTools = [
                 vector: "RiSave3Fill",
                 name: "Save project",
                 value: "save_project",
+                submenu: undefined
             },
             {
                 vector: "LuPrinter",

@@ -2,10 +2,9 @@ import { Tool } from "./tool";
 import { Canvas } from "fabric/fabric-impl";
 import { fabric } from 'fabric';
 import { BezierLinePoint } from "../interfaces";
+import { PointType } from "../enums";
 
 // --> Strategy --> MCCCL
-
-// --> reverse second modifier point to make new curve started
 
 export class PenTool extends Tool {
     currentMousePoint: fabric.Circle | fabric.Rect | null = null;
@@ -24,6 +23,7 @@ export class PenTool extends Tool {
     modifierPoint: BezierLinePoint | null = null;
     modifierPointOposite: BezierLinePoint | null = null;
     LineStringObject: { pointList: { x: number; y: number; }[]; type: string }[] = [];
+    firstPointType: PointType = PointType.FALSE;
 
     constructor(editor: Canvas | null) {
         super(editor, '')
@@ -44,18 +44,6 @@ export class PenTool extends Tool {
 
             console.log(this.x, this.y);
 
-            // this.currentMousePoint = new fabric.Rect({
-            //     width: 10,
-            //     height: 10,
-            //     left: this.x - 5,
-            //     top: this.y - 5,
-            //     fill: '#FFFFFF',
-            //     stroke:'#0062BC',
-            //     strokeWidth: 1,
-            //     padding: 0,
-            //     selectable: false,
-            // });
-
             if(this.LineStringObject.length > 1) {
                 const {pointList, type} = this.LineStringObject[this.LineStringObject.length - 1];
                 if(type === 'C' && pointList.length < 3) {
@@ -69,10 +57,7 @@ export class PenTool extends Tool {
 
             }
 
-
             let type = 'L';
-
-            console.log(this.trackingCoords);
             if(this.trackingCoords != null) {
                 type = 'C';
 
@@ -86,8 +71,6 @@ export class PenTool extends Tool {
 
                 this.bezierLinePoints = [...this.bezierLinePoints, this.modifierPoint];
             }
-
-            console.log(type);
 
             const point: BezierLinePoint = {
                 x: this.x,
@@ -110,10 +93,7 @@ export class PenTool extends Tool {
                 this.bezierLinePoints = [...this.bezierLinePoints, this.modifierPointOposite];
             }
 
-            console.log(this.bezierLinePoints);
-
             this.editor?.renderAll();
-            console.log(this.bezierLinePoints);
             if(this.bezierLinePoints.length > 1) {
                 this.createBezierLine();
             }
@@ -126,12 +106,8 @@ export class PenTool extends Tool {
      *
      */
     createBezierLine() {
-        const firstPoint = this.bezierLinePoints[0];
-
         this.currentLetter = 'M';
-
         this.CurrentType = 'M';
-
         let LineString = ``;
 
         if(this.bezierLinePoints.length > 1) {
@@ -142,10 +118,6 @@ export class PenTool extends Tool {
 
             this.bezierLinePoints.map((point, index) => {
                 const {x,y,type} = point;
-
-
-
-                console.log(CCounter);
 
                 if(index === 0) {
                     this.LineStringObject.push({
@@ -181,16 +153,8 @@ export class PenTool extends Tool {
 
             });
 
-            console.log(this.LineStringObject);
-
             this.LineStringObject.forEach((line) => {
                 const {pointList, type} = line;
-
-                console.log(type)
-                console.log(pointList.length)
-
-                console.log(type === 'C' && pointList.length === 3);
-
                 if(type != 'C' || type === 'C' && pointList.length === 3) LineString += `${type} `;
                 pointList.forEach((point) => {
                     const {x,y} = point;
@@ -200,8 +164,6 @@ export class PenTool extends Tool {
 
             this.editor?.remove(this.bezierLineShape);
 
-            console.log(LineString);
-
             this.bezierLineShape = new fabric.Path(LineString, {
               strokeWidth: 6,
               stroke: '#2563EB',
@@ -210,7 +172,6 @@ export class PenTool extends Tool {
             });
 
             this.editor?.add(this.bezierLineShape);
-
         }
 
         this.editor?.renderAll();
@@ -229,8 +190,6 @@ export class PenTool extends Tool {
             this.x = mouse!.x;
             this.y = mouse!.y;
 
-            console.log(this.x, this.y);
-
             if(this.bezierLinePoints.length === 1) {
                 const firstPoint = this.bezierLinePoints[0];
 
@@ -243,9 +202,7 @@ export class PenTool extends Tool {
                 }
 
                 this.bezierLinePoints.pop();
-
                 this.bezierLinePoints = this.bezierLinePoints.filter((point) => point != null);
-
                 this.bezierLinePoints = [...this.bezierLinePoints, point];
             }
 
@@ -257,7 +214,6 @@ export class PenTool extends Tool {
                     modifier: true,
                 }
             } else {
-                console.log(this.bezierLinePoints);
                 const {x,y} = this.bezierLinePoints[this.bezierLinePoints.length - 2];
                 this.bezierLinePoints[this.bezierLinePoints.length - 3] = {
                     x: this.x,
@@ -266,16 +222,9 @@ export class PenTool extends Tool {
                     modifier: true,
                 }
 
-                const difference_x = x - this.x;
-                const difference_y = y - this.y;
-
+                let difference_x = x - this.x;
+                let difference_y = y - this.y;
                 const difference = [(difference_x > 0),(difference_y > 0)];
-
-                console.log(JSON.stringify(difference));
-
-                console.log([this.x,this.y]);
-                console.log(difference_x);
-                console.log(difference_y);
 
                 let new_x = 0;
                 let new_y = 0;
@@ -297,39 +246,42 @@ export class PenTool extends Tool {
                     new_y = y - difference_y;
                 }
 
-                console.log([x,y]);
-                console.log([new_x,new_y]);
-
-                if(JSON.stringify([this.x,this.y]) === JSON.stringify([new_x,new_y])) {
-                    if(JSON.stringify(difference) === '[true,true]') {
-                        new_x = x - difference_x;
-                        new_y = y - difference_y;
+                if(this.bezierLinePoints.length > 3) {
+                    const differenceCheck = [(difference_x > 0),(difference_y > 0)];
+                    if(JSON.stringify(differenceCheck) === '[true,true]') {
+                        new_x = new_x + difference_x;
+                        new_y = new_y + difference_y;
                     }
-                    else if(JSON.stringify(difference) === '[false,true]') {
-                        new_x = x + difference_x;
-                        new_y = y - difference_y;
+                    else if(JSON.stringify(differenceCheck) === '[false,true]') {
+                        new_x = new_x - (difference_x * -2);
+                        new_y = new_y + difference_y;
                     }
-                    else if(JSON.stringify(difference) === '[true,false]') {
-                        new_x = x - difference_x;
-                        new_y = y + difference_y;
+                    else if(JSON.stringify(differenceCheck) === '[true,false]') {
+                        new_x = new_x + difference_x;
+                        new_y = new_y - (difference_y * -2);
                     }
-                    else if(JSON.stringify(difference) === '[false,false]') {
-                        new_x = x + difference_x;
-                        new_y = y + difference_y;
+                    else if(JSON.stringify(differenceCheck) === '[false,false]') {
+                        new_x = new_x - (difference_x * -2);
+                        new_y = new_y - (difference_y * -2);
                     }
                 }
 
                 this.bezierLinePoints[this.bezierLinePoints.length - 1] = {
+                    x: this.x,
+                    y: this.y,
+                    type: 'C',
+                    modifier: true,
+                }
+                this.bezierLinePoints[this.bezierLinePoints.length - 3] = {
                     x: new_x,
                     y: new_y,
                     type: 'C',
                     modifier: true,
                 }
 
+                this.firstPointType = PointType.TRUE;
+
             }
-
-            console.log(this.modifierPoint);
-
 
             if(this.bezierLinePoints.length > 1) {
                 this.createBezierLine();
